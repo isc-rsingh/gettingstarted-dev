@@ -1,18 +1,18 @@
 # ISC Twenty Eleven
 
-Contributors: wordpressdotorg
-Requires at least: WordPress 3.2
-Tested up to: WordPress 5.0
-Requires PHP: 5.2.4
-Stable tag: 3.3
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: blog, one-column, two-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-image-header, featured-images, flexible-header, footer-widgets, full-width-template, microformats, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready
+- Contributors: wordpressdotorg
+- Requires at least: WordPress 3.2
+- Tested up to: WordPress 5.0
+- Requires PHP: 5.2.4
+- Stable tag: 3.3
+- License: GPLv2 or later
+- License URI: http://www.gnu.org/licenses/gpl-2.0.html
+- Tags: blog, one-column, two-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-image-header, featured-images, flexible-header, footer-widgets, full-width-template, microformats, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready
 
 ## Notes on Raj ISC modifications
 
 
-### For SSO ===
+## For SSO
 
 Use OAuth plugin: https://github.com/daggerhart/openid-connect-generic
 
@@ -21,12 +21,13 @@ In `openid-connect-generic-login-form.php` modify the function `function make_lo
 
 
 
-== Description ==
+## Description
+
 The 2011 theme for WordPress is sophisticated, lightweight, and adaptable. Make it yours with a custom menu, header image, and background -- then go further with available theme options for light or dark color scheme, custom link colors, and three layout choices. Twenty Eleven comes equipped with a Showcase page template that transforms your front page into a showcase to show off your best content, widget support galore (sidebar, three footer areas, and a Showcase page widget area), and a custom "Ephemera" widget to display your Aside, Link, Quote, or Status posts. Included are styles for print and for the admin editor, support for featured images (as custom header images on posts and pages and as large images on featured "sticky" posts), and special styles for six different post formats.
 
 For more information about Twenty Eleven please go to https://codex.wordpress.org/Twenty_Eleven.
 
-== Installation ==
+### Installation
 
 1. In your admin panel, go to Appearance -> Themes and click the 'Add New' button.
 2. Type in Twenty Eleven in the search form and press the 'Enter' key in your keyboard.
@@ -34,7 +35,7 @@ For more information about Twenty Eleven please go to https://codex.wordpress.or
 4. Go to https://codex.wordpress.org/Twenty_Eleven for a guide to customize this theme.
 5. Navigate to Appearance > Customize in your admin panel.
 
-== Copyright ==
+### Copyright
 
 Twenty Eleven WordPress Theme, Copyright 2011-2018 WordPress.org & Automattic.com
 Twenty Eleven is Distributed under the terms of the GNU GPL
@@ -55,7 +56,7 @@ HTML5 Shiv v3.7.0, Copyright 2014 Alexander Farkas
 Licenses: MIT/GPL2
 Source: https://github.com/aFarkas/html5shiv
 
-== Changelog ==
+### Changelog 
 
 = 3.3 =
 * Released: May 7, 2019
