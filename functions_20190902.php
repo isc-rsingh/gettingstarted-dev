@@ -45,9 +45,6 @@ if ( ! isset( $content_width ) ) {
 	$content_width = 584;
 }
 
-define( 'THEME_NAME', 'ISC Theme' );
-define( 'THEME_VERSION', '1.1.0' );
-
 /*
  * Tell WordPress to run twentyeleven_setup() when the 'after_setup_theme' hook is run.
  */
@@ -923,35 +920,24 @@ add_action( 'init', 'register_raj_nav_menu');
 // setup note
 function isc_note_irissetup_shortcode() {
 	$output = '<div class="isc--infobox">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></div>';
+	$output .= '  <div class="isc--infobox--icon"><i class="fas fa-info-circle"></i></div>';
 	$output .= '  <div class="isc--infobox--title">Note</div>';
 	$output .= '  <div>If you don’t have InterSystems IRIS set up yet,  <a href="http://www.intersystems.com/try">get a free development sandbox here</a>.</div>';
 	$output .= '</div>';
 	return $output;
 }
-add_shortcode('isc_note_irissetup', 'isc_note_irissetup_shortcode');
+add_shortcode('isc_note', 'isc_note_shortcode');
 
 // generic note
 function isc_note_shortcode($atts, $content=null) {
 	$output = '<div class="isc--infobox">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></div>';
+	$output .= '  <div class="isc--infobox--icon"><i class="fas fa-info-circle"></i></div>';
 	$output .= '  <div class="isc--infobox--title">Note</div>';
 	$output .= '  <div>' . $content . '</div>';
 	$output .= '</div>';
 	return $output;
 }
-add_shortcode('isc_note', 'isc_note_shortcode');
-
-// useful hint
-function isc_tip_shortcode($atts, $content=null) {
-	$output = '<div class="isc--infobox isc--infobox--tip">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></i></div>';
-	$output .= '  <div class="isc--infobox--title isc--infobox--tip--title">Tip</div>';
-	$output .= '  <div>' . $content . '</div>';
-	$output .= '</div>';
-	return $output;
-}
-add_shortcode('isc_tip', 'isc_tip_shortcode');
+add_shortcode('isc_note_irissetup', 'isc_note_irissetup_shortcode');
 
 // time to completion
 function isc_note_timetocomplete_shortcode($atts, $content=null) {
@@ -960,7 +946,7 @@ function isc_note_timetocomplete_shortcode($atts, $content=null) {
 	), $atts);
 
 	$output = '<div class="isc--infobox isc--infobox--warning">';
-	$output .= '  <div class="isc--infobox--icon"><i class="fas fa-user-clock" style="font-size:smaller"></i></div>';
+	$output .= '  <div class="isc--infobox--icon"><i class="far fa-lightbulb"></i></div>';
 	$output .= '  <div class="isc--infobox--title isc--infobox--warning--title">' . $vals['minutes'] . ' minutes</div>';
 	$output .= '  <div>estimated time of completion</a>.</div>';
 	$output .= '</div>';
@@ -971,7 +957,7 @@ add_shortcode('isc_note_timetocomplete', 'isc_note_timetocomplete_shortcode');
 // finding the Terminal
 function isc_note_terminal_shortcode() {
 	$output = '<div class="isc--infobox isc--infobox--warning">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></i></div>';
+	$output .= '  <div class="isc--infobox--icon"><i class="far fa-lightbulb"></i></div>';
 	$output .= '  <div class="isc--infobox--title isc--infobox--warning--title">Opening the IRIS Terminal</div>';
 	$output .= '  <ul>';
 	$output .= '    <li>Learning Labs Sandbox: from the InterSytems menu, select <strong>InterSystems IRIS Terminal</strong></li>';
@@ -982,23 +968,10 @@ function isc_note_terminal_shortcode() {
 }
 add_shortcode('isc_note_terminal', 'isc_note_terminal_shortcode');
 
-// populates a language table entry
-function isc_lang_support_shortcode($atts, $content=null) {
-	$values = shortcode_atts( array(
-		'url'		=> "",
-	), $atts);
-	if ( strlen($values['url']) < 1 ) 
-		$values['url'] = null;
-	$output = '<a href="' . $values['url'] . '"><i class="fas fa-check"></i></a>';
-	return $output;
-}
-add_shortcode('isc_lang', 'isc_lang_support_shortcode');
-
-
 // make the guidepost
 function isc_guidepost_shortcode($atts, $content=null) {
 	$values = shortcode_atts( array(
-		'next'		=> 2,
+		'next'		=> 1,
 		'itemurls'	=> null, 
 		'itemnames'	=> null, 
 		'alturls' 	=> null,
@@ -1007,119 +980,26 @@ function isc_guidepost_shortcode($atts, $content=null) {
 	$next = intval($values['next']) - 1;
 
 	$itemurls = explode("|", $values['itemurls']);
-	if ( count($itemurls) == 1 && $itemurls[0] == "" ) unset($itemurls[0]);
-	$itemurlcount = count($itemurls);
 	$itemnames = explode("|", $values['itemnames']);
 	$alturls = explode("|", $values['alturls']);
 	if ( count($alturls) == 1 && $alturls[0] == "" ) unset($alturls[0]);
 	$altnames = explode("|", $values['altnames']);
 
-	$output = "<div id='isc--guidepost--section'>";
-
-	if ( $itemurlcount > 0 ) {
-		$output .= "<h2>Up Next</h2>";
-		// main text row
-		$output .= "<table class='isc--guidepost isc--has--main--line'><tbody>";
-		$output .= "<tr class='main--text'>";
-		for ($i = 0; $i < $itemurlcount; $i++) {
-			if ( $i == $next ) {
-				$output .= "<td class='stop--col main--stop--text'>";
-				$output .= "<div class='main--stop--title'><a href='" . $itemurls[$i] . "'>" . $itemnames[$i] . " »</a></div>";
-				$output .= "</td>";
-			} elseif ( $i == $next - 1) {
-				$output .= "<td class='stop--col'>" . $itemnames[$i] . "</td>";
-			} else {
-				$output .= "<td class='stop--col'><a href='" . $itemurls[$i] . "'>" . $itemnames[$i] . "</a></td>";
-			}
-			if ( $i != $itemurlcount - 1 ) {
-				$output .= "<td class='between-stops'></td>";
-			}
-		}
-		$output .= "</tr>";
-
-		// main line
-		$output .= "<tr class='main--line'>";
-		for ($i = 0; $i < $itemurlcount; $i++) {
-			// add a stop graphic
-			// 1st do background
-			if ( $i == 0 ) { // 1st stop needs a curved left side
-				if ( count($alturls)>0 && $next == 1) // if it has a alternative line coming off it, join them
-					$output .= "<td class='stop stop--left--first'>";
-				else 
-					$output .= "<td class='stop stop--left'>";
-			} elseif ( $i == $itemurlcount - 1 ) { // last stop needs a curved right side
-				if ( count($alturls)>0 && $i == $next - 1 ) // if it has a alternative line coming off it, join them
-					$output .= "<td class='stop stop--right--last'>";
-				else 
-					$output .= "<td class='stop stop--right'>";
-			} else {
-				$output .= "<td class='stop stop--mid'>";
-			}
-			// then put circle on top
-			if ( $i == ($next-1) ) 
-				$output .= "<div class='stop--circle next--stop'>";
-			else 
-				$output .= "<div class='stop--circle'>";
-			// finally, put in the link and close tags
-			$output .= "<a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-
-			// then add an intermediate graphic between stops, unless we're at the end
-			if ( $i < $itemurlcount - 1 ) {
-				$output .= "<td class='between-stops'></td>";
-			}
-
-
-			// if ( $i == 0 ) {
-			// 	$output .= "<td class='stop stop--left'><div class='stop--circle'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// } elseif ( $i == $itemurlcount - 1 ) {
-			// 	$output .= "<td class='stop stop--right'><div class='stop--circle'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// } else {
-			// 	if ( $i == $next ) 
-			// 		$output .= "<td class='stop stop--mid'><div class='stop--circle next--stop'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// 	else 
-			// 		$output .= "<td class='stop stop--mid'><div class='stop--circle'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// }
-			// if ( $i < $itemurlcount - 1 ) {
-			// 	$output .= "<td class='between-stops'></td>";
-			// }
-		}
-		$output .= "</tr>";
-
-	} else {
-		$itemurlcount = 5;
+	$output = "<div class='isc--guidepost2'><h2>Up Next</h2><ol>";
+	for ($i = 0; $i < count($itemurls); $i++) {
+		if ( $i == $next ) 
+		$output .= "  <li class='nextitem'><a href='" . $itemurls[$i] . "'>" . $itemnames[$i] . "</a></li>\n";
+		else
+			$output .= "  <li><a href='" . $itemurls[$i] . "'>" . $itemnames[$i] . "</a></li>\n";
 	}
-	
 	if ( count($alturls) > 0 ) {
-		if ( count($itemurls) < 1 ) {
-			$output .= "<h2>Related</h2>";
-			$output .= "<table class='isc--guidepost'><tbody>";
-		}
-
+		$output .= "<li class='alternates'>Alternate paths</li><ul>";
 		for ($i = 0; $i < count($alturls); $i++) {
-			$output .= "<tr class='secondary--line'>";
-			for ($j = 0; $j < $itemurlcount; $j++) {
-				if ( $j == $next - 1 ) {
-					if ( $i == count($alturls) - 1 ) {
-						$output .= "<td class='stop stop--bottom stop--secondary'><div class='stop--circle'><a href='" . $alturls[$i] . "'>&nbsp;</a></div></td>";
-					} elseif ( $i == 0 and count($itemurls) < 1 ) {
-						$output .= "<td class='stop stop--top stop--secondary'><div class='stop--circle'><a href='" . $alturls[$i] . "'>&nbsp;</a></div></td>";
-					} else {
-						$output .= "<td class='stop stop--mid stop--secondary'><div class='stop--circle'><a href='" . $alturls[$i] . "'>&nbsp;</a></div></td>";
-					}
-					$output .= "<td class='stop--col secondary--stop--text between-stops'><div class='secondary--stop--title'><a href='" . $alturls[$i] . "'>" . $altnames[$i] . " »</a></div>";
-					$output .= "</td>";
-				} else {
-					$output .= "<td class='stop--col'></td>";
-					if ( $j < $itemurlcount - 1 ) {
-						$output .= "<td class='between-stops'></td>";
-					}
-				}
-			}
-			$output .= "</tr>";
+			$output .= "  <li class='alternate'><a href='" . $alturls[$i] . "'>" . $altnames[$i] . "</a></li>\n";
 		}
+		$output .= "</ul>";
 	}
-
-	$output .= "</tbody></table></div>";
+	$output .= "</ol></div>";
 
 	return $output;
 }
@@ -1132,273 +1012,3 @@ function disable_wp_auto_p( $content ) {
 	return $content;
   }
   add_filter( 'the_content', 'disable_wp_auto_p', 0 );
-
-/**
- * Enqueue Scripts - Load Front End JS
- */
-function isc_enqueue_front_end_scripts() {
-
-	$version = THEME_VERSION;
-	$handle = sanitize_title_with_dashes( THEME_NAME );
-	//wp_dequeue_script('jquery');
-	wp_enqueue_script( $handle . 'main', get_template_directory_uri() . '/assets/js/main.min.js', array(), $version, true );
-
-}
-add_action( 'wp_enqueue_scripts', 'isc_enqueue_front_end_scripts' );
-
-/**
- * Get Menu Name
- */
-function isc_get_menu_name( $location ) {
-    if( empty($location) ) return false;
-
-    $locations = get_nav_menu_locations();
-    if( ! isset( $locations[$location] ) ) return false;
-
-    $menu_obj = get_term( $locations[$location], 'nav_menu' );
-
-    return $menu_obj->name;
-}
-
-/**
-* Custom Menu Walker to Add Span for Dropdown
-*/
-class Isc_Walker extends Walker_Nav_Menu {
-	function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
-
-		// Close Tags and Add Span if Dropdown
-		$output .= '<li class="' .  implode(' ', $item->classes) . '">';
-		$output .= '<a href="' . $item->url . '" target="' . $item->target . '">';
-		$output .= $item->title;
-		$output .= '</a>';
-		if(in_array( 'menu-item-has-children', $item->classes)) {
-			$output .= '<span class="plus"><span class="horizontal"></span><span class="vertical"></span></span>';
-		}
-	}
-}
-
-/**
-* Add custom styles to the WordPress editor
-*/
-function isc_custom_styles( $init_array ) {
-
-    $style_formats = array(
-        // These are the custom styles
-        array(
-            'title'   => 'New Custom Styles',
-            'items' => array(
-		        array(
-		            'title' => 'Heading 1',
-		            'block' => 'span',
-		            'classes' => 'h_1',
-		            'wrapper' => true,
-		        ),
-		        array(
-		            'title' => 'Heading 2',
-		            'block' => 'span',
-		            'classes' => 'h_2',
-		            'wrapper' => true,
-		        ),
-		        array(
-		            'title' => 'Heading 3',
-		            'block' => 'span',
-		            'classes' => 'h_3',
-		            'wrapper' => true,
-		        ),
-		        array(
-		            'title' => 'Heading 4',
-		            'block' => 'span',
-		            'classes' => 'h_4',
-		            'wrapper' => true,
-		        ),
-		        array(
-		            'title' => 'Heading 5',
-		            'block' => 'span',
-		            'classes' => 'h_5',
-		            'wrapper' => true,
-		        ),
-		        array(
-		            'title' => 'Paragraph Small',
-		            'selector' => 'p',
-		            'classes' => 'p_sm',
-		            'wrapper' => true,
-		        ),
-		        array(
-		            'title' => 'Paragraph Large',
-		            'selector' => 'p',
-		            'classes' => 'p_lg',
-		            'wrapper' => true,
-		        ),
-            ),
-        ),
-    );
-    // Insert the array, JSON ENCODED, into 'style_formats'
-    $init_array['style_formats'] = json_encode( $style_formats );
-
-    return $init_array;
-
-}
-add_filter( 'tiny_mce_before_init', 'isc_custom_styles' );
-
-/** 
-* Common sense function for automating image retrieval 
-*/
-function isc_get_attachment( $attachment_id, $size = '' ) {
-
-	$attachment = get_post( $attachment_id );
-
-	if ( ! $attachment )
-		return;
-
-	$src = ( $size != '' ) ? wp_get_attachment_image_src( $attachment_id, $size )[0] : wp_get_attachment_url($attachment_id);
-	$srcset = wp_get_attachment_image_srcset( $attachment_id );
-
-	return array(
-		'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
-		'href' => get_permalink( $attachment->ID ),
-		'src' => $src,
-		'srcset' => $srcset,
-	);
-}
-
-/**
-* EXTRA SHORTCODES
-*/
-
-// Button with option for video modal popup by adding class .js-modalTrigger and using video ID for brightcove video for iframe embed
-function isc_button_shortcode($atts) {
-	$values = shortcode_atts( array(
-		'class' => "isc_btn",
-		'href' => "#",
-		'label' => "Button Label",
-		'target' => "_self",
-	), $atts);
-
-	if(strpos($values['class'], 'js-modalTrigger') !== false) {
-		$output = '<a href="#' . $values['href'] . '" class="' . $values['class'] . '" target="' . $values['target'] . '"><img src="' . get_template_directory_uri() . '/assets/images/play-button.svg" />' . $values['label'] . '</a>';
-		$output .= '<div id="' . $values['href'] . '" class="int-modal int-modal--center">';
-		$output .= '<div class="int-modal__overlay"></div>';
-		$output .= '<div class="int-modal__dialog">';
-		$output .= '<div class="video-container">';
-		$output .= '<div class="video">';
-		$output .= '<div class="video-responsive">';
-		$output .= '<iframe src="https://players.brightcove.net/610060920001/SJUmxczP_default/index.html?videoId=' . $values['href'] . '" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>';
-		$output .= '</div>';
-		$output .= '</div>';
-		$output .= '</div>';
-		$output .= '<a href="#" class="int-modal__close js-closeModal">+</a>';
-		$output .= '</div>';
-		$output .= '</div>';
-	} else {
-		$output = '<a href="' . $values['href'] . '" class="' . $values['class'] . '" target="' . $values['target'] . '">' . $values['label'] . '</a>';
-	}
-
-	return $output;
-}
-add_shortcode('isc_button', 'isc_button_shortcode');
-
-// Content anchor for in page links
-function isc_anchor_shortcode($atts) {
-	$values = shortcode_atts( array(
-		'id' => "#",
-	), $atts);
-
-	$output = '<span id="' . $values['id'] . '" class="anchor-tag"></span>';
-
-	return $output;
-}
-add_shortcode('isc_anchor', 'isc_anchor_shortcode');
-
-// Content divider
-function isc_divider_shortcode() {
-
-	$output = '<div class="content-divider"></div>';
-
-	return $output;
-}
-add_shortcode('isc_divider', 'isc_divider_shortcode');
-
-// Add a menus to theme
-function isc_register_menus() {
-	register_nav_menu('top-menu', __('Top Menu'));
-	register_nav_menu('footer-menu', __('Footer Menu'));
-}
-add_action( 'init', 'isc_register_menus');
-
-/*
-Enable Options Page
-*/
-if( function_exists('acf_add_options_page') ) {	
-	acf_add_options_page();
-}
-// Show evaluation instance credentials
-function show_eval_creds($atts = [], $content = null) {
-	$user_id = get_current_user_id();
-	if ( $user_id < 1 ) {
-		global $wp;
-		$ssoregister = 'https://login.intersystems.com/uat/SSO.UI.Register.cls?referrer=https://dev-start.intersystems.com/';
-		$ssologin = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw';
-		$ssologin .= '&redirect_uri=' . home_url( $wp->request );
-		
-		ob_start();
-		?>
-		<a name="getsandbox"></a>
-		<div class="isc--infobox">
-			<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a>			
-			<?php echo (do_shortcode($content)) ?>   
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-
-	$output = '';
-	$all_meta_for_user = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
-	if ( array_key_exists('openid-connect-generic-subject-identity', $all_meta_for_user) ) {
-		// $output .= 'ISCLOGIN: ' . $all_meta_for_user['openid-connect-generic-subject-identity'];
-		ob_start();
-		?>
-		<a name="getsandbox"></a>
-		<div class="isc--infobox">
-			<a class="isc_btn" href="#">Launch Online Evaluation</a>			
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-	else {
-		$output .= '<h3>User logged in but no array key openid-connect-generic-subject-identity</h3>';
-	}
-	return $output;
-}
-
-add_shortcode('iris_eval_creds', 'show_eval_creds');
-
-// modify the generic SSO login button for InterSystems
-add_filter('openid-connect-generic-login-button-text', function( $text ) {
-    $text = __('InterSystems Login');
-    return $text;
-});
-
-// Based on some data in the user_claim, modify the user.
-add_action('openid-connect-generic-update-user-using-current-claim', function( $user, $user_claim) {
-    if ( !empty( $user_claim['wp_user_role'] ) ) {
-        update_user_meta( $user->ID, 'ISCLOGIN', 1 );
-    }
-}, 10, 2);
-
-// React to a user being redirected after a successful login
-// by trying to go to a page anchor named "getsandbox"
-add_action('openid-connect-generic-redirect-user-back', function( $redirect_url, $user ) {
-	wp_redirect($redirect_url . '#getsandbox');
-	exit();
-}, 10, 2); 
-
-
-/* Async Drift Code */
-add_action('wp_head', 'install_drift');
-function install_drift() {
-?>
-<!-- Start Async Drift Code --> 
-<script> "use strict"; !function() { var t = window.driftt = window.drift = window.driftt || []; if (!t.init) { if (t.invoked) return void (window.console && console.error && console.error("Drift snippet included twice.")); t.invoked = !0, t.methods = [ "identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on" ], t.factory = function(e) { return function() { var n = Array.prototype.slice.call(arguments); return n.unshift(e), t.push(n), t; }; }, t.methods.forEach(function(e) { t[e] = t.factory(e); }), t.load = function(t) { var e = 3e5, n = Math.ceil(new Date() / e) * e, o = document.createElement("script"); o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js"; var i = document.getElementsByTagName("script")[0]; i.parentNode.insertBefore(o, i); }; } }(); drift.SNIPPET_VERSION = '0.3.1'; drift.load('w9s2kkgrasip'); </script> 
-<!-- End of Async Drift Code --> 
-<?php 
-};
