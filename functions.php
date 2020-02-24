@@ -46,7 +46,7 @@ if ( ! isset( $content_width ) ) {
 }
 
 define( 'THEME_NAME', 'ISC Theme' );
-define( 'THEME_VERSION', '1.1.0' );
+define( 'THEME_VERSION', '1.1.1' );
 
 /*
  * Tell WordPress to run twentyeleven_setup() when the 'after_setup_theme' hook is run.
@@ -922,10 +922,9 @@ add_action( 'init', 'register_raj_nav_menu');
 
 // setup note
 function isc_note_irissetup_shortcode() {
-	$output = '<div class="isc--infobox">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></div>';
-	$output .= '  <div class="isc--infobox--title">Note</div>';
-	$output .= '  <div>If you don’t have InterSystems IRIS set up yet,  <a href="http://www.intersystems.com/try">get a free development sandbox here</a>.</div>';
+	$output = '<div class="isc_infobox">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-info.png""></div>';
+	$output .= '  <div class="isc_infobox--content">If you don’t have InterSystems IRIS set up yet,  <a href="http://www.intersystems.com/try">get a free development sandbox here</a>.</div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -933,10 +932,9 @@ add_shortcode('isc_note_irissetup', 'isc_note_irissetup_shortcode');
 
 // generic note
 function isc_note_shortcode($atts, $content=null) {
-	$output = '<div class="isc--infobox">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></div>';
-	$output .= '  <div class="isc--infobox--title">Note</div>';
-	$output .= '  <div>' . $content . '</div>';
+	$output = '<div class="isc_infobox">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-info.png"></div>';
+	$output .= '  <div class="isc_infobox--content">' . $content . '</div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -944,14 +942,23 @@ add_shortcode('isc_note', 'isc_note_shortcode');
 
 // useful hint
 function isc_tip_shortcode($atts, $content=null) {
-	$output = '<div class="isc--infobox isc--infobox--tip">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></i></div>';
-	$output .= '  <div class="isc--infobox--title isc--infobox--tip--title">Tip</div>';
-	$output .= '  <div>' . $content . '</div>';
+	$output = '<div class="isc_infobox isc_infobox--tip">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-tip.png""></i></div>';
+	$output .= '  <div class="isc_infobox--content">' . $content . '</div>';
 	$output .= '</div>';
 	return $output;
 }
 add_shortcode('isc_tip', 'isc_tip_shortcode');
+
+// warning note
+function isc_warning_shortcode($atts, $content=null) {
+	$output = '<div class="isc_infobox isc_infobox--warning">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-warning.png""></i></div>';
+	$output .= '  <div class="isc_infobox--content">' . $content . '</div>';
+	$output .= '</div>';
+	return $output;
+}
+add_shortcode('isc_warning', 'isc_warning_shortcode');
 
 // time to completion
 function isc_note_timetocomplete_shortcode($atts, $content=null) {
@@ -959,10 +966,10 @@ function isc_note_timetocomplete_shortcode($atts, $content=null) {
 		'minutes' => '10',
 	), $atts);
 
-	$output = '<div class="isc--infobox isc--infobox--warning">';
-	$output .= '  <div class="isc--infobox--icon"><i class="fas fa-user-clock" style="font-size:smaller"></i></div>';
-	$output .= '  <div class="isc--infobox--title isc--infobox--warning--title">' . $vals['minutes'] . ' minutes</div>';
-	$output .= '  <div>estimated time of completion</a>.</div>';
+	$output = '<div class="isc_infobox">';
+	$output .= '  <div class="isc_infobox--icon"><i class="fas fa-user-clock" style="font-size:smaller"></i></div>';
+	$output .= '  <div class="isc_infobox--title isc_infobox--warning--title">' . $vals['minutes'] . ' minutes</div>';
+	$output .= '  <div class="isc_infobox--content">estimated time of completion</a>.</div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -970,13 +977,15 @@ add_shortcode('isc_note_timetocomplete', 'isc_note_timetocomplete_shortcode');
 
 // finding the Terminal
 function isc_note_terminal_shortcode() {
-	$output = '<div class="isc--infobox isc--infobox--warning">';
-	$output .= '  <div class="isc--infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/alert-icon.svg""></i></div>';
-	$output .= '  <div class="isc--infobox--title isc--infobox--warning--title">Opening the IRIS Terminal</div>';
+	$output = '<div class="isc_infobox">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-info.png""></i></div>';
+	$output .= '  <div class="isc_infobox--content">';
+	$output .= '  <div class="isc_infobox--title">Opening the IRIS Terminal</div>';
 	$output .= '  <ul>';
 	$output .= '    <li>Learning Labs Sandbox: from the InterSytems menu, select <strong>InterSystems IRIS Terminal</strong></li>';
 	$output .= '    <li>Docker-based: from the container host’s shell, use the command <code>docker exec -it try-iris iris terminal &lt;IRIS instance name&gt;</code></li>';
 	$output .= '  </ul>';
+	$output .= '</div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -993,137 +1002,6 @@ function isc_lang_support_shortcode($atts, $content=null) {
 	return $output;
 }
 add_shortcode('isc_lang', 'isc_lang_support_shortcode');
-
-
-// make the guidepost
-function isc_guidepost_shortcode($atts, $content=null) {
-	$values = shortcode_atts( array(
-		'next'		=> 2,
-		'itemurls'	=> null, 
-		'itemnames'	=> null, 
-		'alturls' 	=> null,
-		'altnames' 	=> null
-	), $atts);
-	$next = intval($values['next']) - 1;
-
-	$itemurls = explode("|", $values['itemurls']);
-	if ( count($itemurls) == 1 && $itemurls[0] == "" ) unset($itemurls[0]);
-	$itemurlcount = count($itemurls);
-	$itemnames = explode("|", $values['itemnames']);
-	$alturls = explode("|", $values['alturls']);
-	if ( count($alturls) == 1 && $alturls[0] == "" ) unset($alturls[0]);
-	$altnames = explode("|", $values['altnames']);
-
-	$output = "<div id='isc--guidepost--section'>";
-
-	if ( $itemurlcount > 0 ) {
-		$output .= "<h2>Up Next</h2>";
-		// main text row
-		$output .= "<table class='isc--guidepost isc--has--main--line'><tbody>";
-		$output .= "<tr class='main--text'>";
-		for ($i = 0; $i < $itemurlcount; $i++) {
-			if ( $i == $next ) {
-				$output .= "<td class='stop--col main--stop--text'>";
-				$output .= "<div class='main--stop--title'><a href='" . $itemurls[$i] . "'>" . $itemnames[$i] . " »</a></div>";
-				$output .= "</td>";
-			} elseif ( $i == $next - 1) {
-				$output .= "<td class='stop--col'>" . $itemnames[$i] . "</td>";
-			} else {
-				$output .= "<td class='stop--col'><a href='" . $itemurls[$i] . "'>" . $itemnames[$i] . "</a></td>";
-			}
-			if ( $i != $itemurlcount - 1 ) {
-				$output .= "<td class='between-stops'></td>";
-			}
-		}
-		$output .= "</tr>";
-
-		// main line
-		$output .= "<tr class='main--line'>";
-		for ($i = 0; $i < $itemurlcount; $i++) {
-			// add a stop graphic
-			// 1st do background
-			if ( $i == 0 ) { // 1st stop needs a curved left side
-				if ( count($alturls)>0 && $next == 1) // if it has a alternative line coming off it, join them
-					$output .= "<td class='stop stop--left--first'>";
-				else 
-					$output .= "<td class='stop stop--left'>";
-			} elseif ( $i == $itemurlcount - 1 ) { // last stop needs a curved right side
-				if ( count($alturls)>0 && $i == $next - 1 ) // if it has a alternative line coming off it, join them
-					$output .= "<td class='stop stop--right--last'>";
-				else 
-					$output .= "<td class='stop stop--right'>";
-			} else {
-				$output .= "<td class='stop stop--mid'>";
-			}
-			// then put circle on top
-			if ( $i == ($next-1) ) 
-				$output .= "<div class='stop--circle next--stop'>";
-			else 
-				$output .= "<div class='stop--circle'>";
-			// finally, put in the link and close tags
-			$output .= "<a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-
-			// then add an intermediate graphic between stops, unless we're at the end
-			if ( $i < $itemurlcount - 1 ) {
-				$output .= "<td class='between-stops'></td>";
-			}
-
-
-			// if ( $i == 0 ) {
-			// 	$output .= "<td class='stop stop--left'><div class='stop--circle'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// } elseif ( $i == $itemurlcount - 1 ) {
-			// 	$output .= "<td class='stop stop--right'><div class='stop--circle'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// } else {
-			// 	if ( $i == $next ) 
-			// 		$output .= "<td class='stop stop--mid'><div class='stop--circle next--stop'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// 	else 
-			// 		$output .= "<td class='stop stop--mid'><div class='stop--circle'><a href='" . $itemurls[$i] . "'>&nbsp;</a></div></td>";
-			// }
-			// if ( $i < $itemurlcount - 1 ) {
-			// 	$output .= "<td class='between-stops'></td>";
-			// }
-		}
-		$output .= "</tr>";
-
-	} else {
-		$itemurlcount = 5;
-	}
-	
-	if ( count($alturls) > 0 ) {
-		if ( count($itemurls) < 1 ) {
-			$output .= "<h2>Related</h2>";
-			$output .= "<table class='isc--guidepost'><tbody>";
-		}
-
-		for ($i = 0; $i < count($alturls); $i++) {
-			$output .= "<tr class='secondary--line'>";
-			for ($j = 0; $j < $itemurlcount; $j++) {
-				if ( $j == $next - 1 ) {
-					if ( $i == count($alturls) - 1 ) {
-						$output .= "<td class='stop stop--bottom stop--secondary'><div class='stop--circle'><a href='" . $alturls[$i] . "'>&nbsp;</a></div></td>";
-					} elseif ( $i == 0 and count($itemurls) < 1 ) {
-						$output .= "<td class='stop stop--top stop--secondary'><div class='stop--circle'><a href='" . $alturls[$i] . "'>&nbsp;</a></div></td>";
-					} else {
-						$output .= "<td class='stop stop--mid stop--secondary'><div class='stop--circle'><a href='" . $alturls[$i] . "'>&nbsp;</a></div></td>";
-					}
-					$output .= "<td class='stop--col secondary--stop--text between-stops'><div class='secondary--stop--title'><a href='" . $alturls[$i] . "'>" . $altnames[$i] . " »</a></div>";
-					$output .= "</td>";
-				} else {
-					$output .= "<td class='stop--col'></td>";
-					if ( $j < $itemurlcount - 1 ) {
-						$output .= "<td class='between-stops'></td>";
-					}
-				}
-			}
-			$output .= "</tr>";
-		}
-	}
-
-	$output .= "</tbody></table></div>";
-
-	return $output;
-}
-add_shortcode('isc_guidepost', 'isc_guidepost_shortcode');
 
 // Prevent WP from adding <p> tags on all post types
 function disable_wp_auto_p( $content ) {
@@ -1336,16 +1214,24 @@ function show_eval_creds($atts = [], $content = null) {
 	$user_id = get_current_user_id();
 	if ( $user_id < 1 ) {
 		global $wp;
-		$ssoregister = 'https://login.intersystems.com/uat/SSO.UI.Register.cls?referrer=https://dev-start.intersystems.com/';
-		$ssologin = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw';
+		$ssoregister = 'https://login-base.intersystems.com/login/SSO.UI.Register.cls?referrer=https://dev-start.intersystems.com/';
+		$ssologin = 'https://login-base.intersystems.com/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw';
 		$ssologin .= '&redirect_uri=' . home_url( $wp->request );
-		
+
 		ob_start();
 		?>
 		<a name="getsandbox"></a>
-		<div class="isc--infobox">
-			<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a>			
-			<?php echo (do_shortcode($content)) ?>   
+		<div class="isc_infobox">
+			<div class="isc_infobox--icon">
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-info.png">
+			</div>
+			<div class="isc_infobox--content">
+				<div>Login or create a free InterSystems account to get a cloud-based evaluation version of InterSystems IRIS -- free for 30 days.</div>
+				<div>
+				<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a> 
+				<?php echo do_shortcode($content) ?>
+				</div>
+			</div>
 		</div>
 		<?php
 		return ob_get_clean();
@@ -1353,16 +1239,11 @@ function show_eval_creds($atts = [], $content = null) {
 
 	$output = '';
 	$all_meta_for_user = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
+	// foreach ( $all_meta_for_user as $mkey => $mval) {
+	// 	$output .= $mkey . " => " . $mval . "<br/>";
+	// }
 	if ( array_key_exists('openid-connect-generic-subject-identity', $all_meta_for_user) ) {
-		// $output .= 'ISCLOGIN: ' . $all_meta_for_user['openid-connect-generic-subject-identity'];
-		ob_start();
-		?>
-		<a name="getsandbox"></a>
-		<div class="isc--infobox">
-			<a class="isc_btn" href="#">Launch Online Evaluation</a>			
-		</div>
-		<?php
-		return ob_get_clean();
+		$output .= '<h3>ISCLOGIN: ' . $all_meta_for_user['openid-connect-generic-subject-identity'] . '</h3>';
 	}
 	else {
 		$output .= '<h3>User logged in but no array key openid-connect-generic-subject-identity</h3>';
@@ -1391,14 +1272,3 @@ add_action('openid-connect-generic-redirect-user-back', function( $redirect_url,
 	wp_redirect($redirect_url . '#getsandbox');
 	exit();
 }, 10, 2); 
-
-
-/* Async Drift Code */
-add_action('wp_head', 'install_drift');
-function install_drift() {
-?>
-<!-- Start Async Drift Code --> 
-<script> "use strict"; !function() { var t = window.driftt = window.drift = window.driftt || []; if (!t.init) { if (t.invoked) return void (window.console && console.error && console.error("Drift snippet included twice.")); t.invoked = !0, t.methods = [ "identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on" ], t.factory = function(e) { return function() { var n = Array.prototype.slice.call(arguments); return n.unshift(e), t.push(n), t; }; }, t.methods.forEach(function(e) { t[e] = t.factory(e); }), t.load = function(t) { var e = 3e5, n = Math.ceil(new Date() / e) * e, o = document.createElement("script"); o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js"; var i = document.getElementsByTagName("script")[0]; i.parentNode.insertBefore(o, i); }; } }(); drift.SNIPPET_VERSION = '0.3.1'; drift.load('w9s2kkgrasip'); </script> 
-<!-- End of Async Drift Code --> 
-<?php 
-};
