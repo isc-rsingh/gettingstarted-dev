@@ -1286,21 +1286,18 @@ function sandbox_not_expired() {
 
 // Show evaluation instance credentials
 function show_eval_creds($atts = [], $content = null) {
-	$values = shortcode_atts( array(
-		'itemanchor' => "getsandbox",
-	), $atts);
 	$user_id = get_current_user_id();
 
 	// When visitor is not logged in (via ISC SSO), then they must do this before launching sandbox
 	if ( $user_id < 1 ) {
 		global $wp;
-		$thisurl = home_url( $wp->request ) . '#' . $values['itemanchor'];
+		$thisurl = home_url( $wp->request ) . '#getsandbox';
 		$ssoregister = 'https://login.intersystems.com/login/SSO.UI.Register.cls?referrer=' . $thisurl;
 		$ssologin = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=' . $thisurl;
 		
 		ob_start();
 		?>
-		<a name=<?php echo $values['itemanchor']?>></a>
+		<a name="getsandbox"></a>
 		<div class="isc_infobox">
 			<div class="isc_infobox--icon">
 				<noscript><img src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png"></noscript>
@@ -1324,7 +1321,8 @@ function show_eval_creds($atts = [], $content = null) {
 	$output = '';
 	$all_meta_for_user = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
 	if ( sandbox_not_expired() < 1 ) {
-		// get a token for creating an evaluation sandbox for the user
+		// Sandbox is either non-existent, or expired
+		// Get a token for creating an evaluation sandbox for the user
 		// Returns 200 and a token that is valid for the provided email address for 10 minutes if email is associated with a fully-registered SSO user.
 		// Otherwise returns 401 w/ error message
 		// TODO: change this to use cURL to be able to handle an error message (see https://thisinterestsme.com/send-get-request-with-php/)
@@ -1338,6 +1336,7 @@ function show_eval_creds($atts = [], $content = null) {
 		<script>function launcheval(useremail, token) {
 			jQuery(document).ready(function($){ 
 				$('#isc-launch-eval-btn').html('Launching...');
+				// @TODO this is where we can put something interesting to watch for the minute it takes for the containers to spin up...
 				var url = 'https://lsiris.intersystems.com/test-iris/gs/get-container-info/' + useremail;
 				$.ajax(url, {
 					type: 'POST', 
@@ -1348,6 +1347,9 @@ function show_eval_creds($atts = [], $content = null) {
 						"Authorization": token
 					},
 					success: function(data, status, xhr) {
+						console.log("Sending config data to sandbox_config_save()...");
+						console.log(data);
+						sandbox_config_save(data);
 						// @TODO change this to use user metadata
 						var msg = '<ul class="evalinfobox">';
 						msg += '<li><a href="'+data.IDE+'" target="_new">Developer Environment</a></li>';
@@ -1358,9 +1360,6 @@ function show_eval_creds($atts = [], $content = null) {
 						msg += '</ul>';
 						$('#isc-launch-eval-btn').css('display', 'none');
 						$('#isc-waiting-area').html(msg);
-						console.log("Sending config data to sandbox_config_save()...");
-						console.log(data);
-						sandbox_config_save(data);
 					},
 					error: function(jqXhr, textStatus, errorMessage) {
 						var emsg = 'Error: <b>' + errorMessage + '</b>';
@@ -1370,7 +1369,7 @@ function show_eval_creds($atts = [], $content = null) {
 				})
 			});
 		}</script>
-		<a name=<?php echo $values['itemanchor']?>></a>
+		<a name="getsandbox"></a>
 		<div class="isc_infobox">
 			<div class="isc_infobox--icon">
 				<noscript><img src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png"></noscript>
@@ -1391,7 +1390,7 @@ function show_eval_creds($atts = [], $content = null) {
 		// Sandbox is not expired so just show stored settings
 		ob_start();
 		?>
-		<a name=<?php echo $values['itemanchor']?>></a>
+		<a name="getsandbox"></a>
 		<div class="isc_infobox">
 			<div class="isc_infobox--icon">
 				<noscript><img src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png"></noscript>
