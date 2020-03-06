@@ -5036,23 +5036,29 @@ a:visited {
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: justify;
-          justify-content: space-between; }
-  .isc_infobox--tip {
+  justify-content: space-between;
+}
+.isc_infobox--tip {
     border: 5px solid #00B2AA; }
-    .isc_infobox--tip .isc_infobox--icon img {
+.isc_infobox--tip .isc_infobox--icon img {
       max-width: 18px; }
-  .isc_infobox--warning {
+.isc_infobox--warning {
     border: 5px solid #A75348; }
-  .isc_infobox--icon {
+.isc_infobox--icon {
     flex-basis: 26px; }
-    .isc_infobox--icon img {
+.isc_infobox--icon img {
       max-width: 25px;
       margin: 2px auto;
       display: block; }
-  .isc_infobox--content {
+.isc_infobox--content {
     flex-basis: calc(100% - 40px); }
-    .isc_infobox--content li {
+.isc_infobox--content li {
       margin-top: 10px !important; }
+
+.isc_sandbox_cta .isc_btn {
+  width: 96px;
+}
+
 
 ol.two {
   counter-reset: item 1 !important; }
@@ -6408,3 +6414,8 @@ ol.twenty {
       height: 50px;
       margin: 0 auto;
       padding-right: 25px; }
+
+.isc_infobox--content .isc_btn {
+  width: 140px;
+  margin: 0 12px;
+}
