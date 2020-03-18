@@ -295,12 +295,13 @@ endif; // twentyeleven_setup
  *
  * @since Twenty Eleven 2.9
  */
+/*
 function twentyeleven_scripts_styles() {
 	// Theme block stylesheet.
 	wp_enqueue_style( 'twentyeleven-block-style', get_template_directory_uri() . '/blocksZZ.css', array(), '20181230' );
 }
 add_action( 'wp_enqueue_scripts', 'twentyeleven_scripts_styles' );
-
+*/
 /**
  * Enqueue styles for the block-based editor.
  *
@@ -1270,7 +1271,7 @@ add_action('openid-connect-generic-redirect-user-back', function( $redirect_url,
 /** End InterSystems SSO Implementation **/
 
 /** 
- * InterSystems Learning Services Evaluation Service Implementation
+ * InterSystems Sandbox Implementation
  * Any logged in user has been authenticated using SSO, so we know if 
  * we have an email address for them, we're willing to create the evaluation service for them. 
  * Use their email to get a token back from the LS service, then use the token to get the evail service.
@@ -1281,30 +1282,38 @@ function sandbox_not_expired() {
 	$user_id = get_current_user_id();
 	$sandbox_expires_date = strtotime( get_user_meta( $user_id, 'sandbox_expires', true) );
 	$nowdate = current_time( 'timestamp', 0 );
-	return ( $nowdate < $sandbox_expires_date );
+	$exp = ($sandbox_expires_date - $nowdate) < 1 ? True : False;
+	return ( $exp );
 }
 
 // Show evaluation instance credentials
 function show_eval_creds($atts = [], $content = null) {
+	$values = shortcode_atts( array(
+		'login_box_content' => "If you don’t have InterSystems IRIS yet, get a free, online development sandbox here.",
+		'launch_box_content' => "Provision your free, online sandbox environment. Includes InterSystems IRIS and the Theia Web IDE."
+	), $atts);
+
 	$user_id = get_current_user_id();
 
 	// When visitor is not logged in (via ISC SSO), then they must do this before launching sandbox
 	if ( $user_id < 1 ) {
 		global $wp;
-		$thisurl = home_url( $wp->request ) . '#getsandbox';
-		$ssoregister = 'https://login.intersystems.com/login/SSO.UI.Register.cls?referrer=' . $thisurl;
-		$ssologin = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=' . $thisurl;
+		global $isc_globals;
+		$thisurl = urlencode(home_url( $wp->request ) . '#getsandbox');
+		// $ssoregister = 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=' . esc_url($thisurl);
+		// $ssologin = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid
+		$ssoregister = $isc_globals['sso_registration_page'] . $thisurl;
+		$ssologin = $isc_globals['sso_login_page'] . $thisurl;
 		
 		ob_start();
 		?>
 		<a name="getsandbox"></a>
-		<div class="isc_infobox">
+		<div class="isc_infobox isc_infobox--tip">
 			<div class="isc_infobox--icon">
-				<noscript><img src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png"></noscript>
-				<img class=" ls-is-cached lazyloaded" src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png" data-src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png">
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p>If you don’t have InterSystems IRIS yet, get a free, online development sandbox here.</p>
+				<p><?php echo ($values['login_box_content'])?></p>
 				<div  style="text-align: center">
 					<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a>	
 					<?php echo (do_shortcode($content)) ?>
@@ -1320,7 +1329,7 @@ function show_eval_creds($atts = [], $content = null) {
 	// If not, do all the things to launch one
 	$output = '';
 	$all_meta_for_user = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
-	if ( sandbox_not_expired() < 1 ) {
+	if ( sandbox_not_expired() ) {
 		// Sandbox is either non-existent, or expired
 		// Get a token for creating an evaluation sandbox for the user
 		// Returns 200 and a token that is valid for the provided email address for 10 minutes if email is associated with a fully-registered SSO user.
@@ -1328,57 +1337,24 @@ function show_eval_creds($atts = [], $content = null) {
 		// TODO: change this to use cURL to be able to handle an error message (see https://thisinterestsme.com/send-get-request-with-php/)
 		$user_info = get_userdata($user_id);
 		$useremail = $user_info->user_email;
-		$token_url = 'https://lsiris.intersystems.com/test-iris/gs/authorize/' . $useremail;
+		global $isc_globals;
+		$token_url = $isc_globals['sanbox_token_service'] . '/authorize/' . $useremail;
 		$sandbox_token = file_get_contents($token_url);
+		error_log("token_url: $token_url");
+		$sandbox_meta_url = $isc_globals['sanbox_token_service'] . '/get-container-info/' . $useremail;
+		error_log("sandbox_meta_url: $sandbox_meta_url");
 
 		ob_start();
 		?>
-		<script>function launcheval(useremail, token) {
-			jQuery(document).ready(function($){ 
-				$('#isc-launch-eval-btn').html('Launching...');
-				// @TODO this is where we can put something interesting to watch for the minute it takes for the containers to spin up...
-				var url = 'https://lsiris.intersystems.com/test-iris/gs/get-container-info/' + useremail;
-				$.ajax(url, {
-					type: 'POST', 
-					data: {}, 
-					dataType: 'json', 
-					timeout: 500000, 
-					headers: {
-						"Authorization": token
-					},
-					success: function(data, status, xhr) {
-						console.log("Sending config data to sandbox_config_save()...");
-						console.log(data);
-						sandbox_config_save(data);
-						// @TODO change this to use user metadata
-						var msg = '<ul class="evalinfobox">';
-						msg += '<li><a href="'+data.IDE+'" target="_new">Developer Environment</a></li>';
-						msg += '<li><a href="'+data.MP+'" target="_new">InterSystems IRIS Management Portal</a></li>';
-						msg += '<li><a href="'+data.AtelierAddress+'" target="_new">External IDE URL</a></li>';
-						msg += '<li><a href="'+data.AtelierWebPort+'" target="_new">External IDE Port</a></li>';
-						msg += '<li>Expires: '+data.exp+'</li>';
-						msg += '</ul>';
-						$('#isc-launch-eval-btn').css('display', 'none');
-						$('#isc-waiting-area').html(msg);
-					},
-					error: function(jqXhr, textStatus, errorMessage) {
-						var emsg = 'Error: <b>' + errorMessage + '</b>';
-						emsg += '<br/>' + textStatus;
-						$('#isc-waiting-area').html(emsg);
-					}
-				})
-			});
-		}</script>
 		<a name="getsandbox"></a>
-		<div class="isc_infobox">
+		<div class="isc_infobox isc_infobox--tip">
 			<div class="isc_infobox--icon">
-				<noscript><img src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png"></noscript>
-				<img class=" ls-is-cached lazyloaded" src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png" data-src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png">
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p>Provision your free, online sandbox environment. Includes InterSystems IRIS and the Theia Web IDE</p>
+				<p><?php echo ($values['launch_box_content'])?></p>
 				<div style="text-align: center">
-					<a style="width: unset" id="isc-launch-eval-btn" class="isc_btn" onclick="launcheval('<?php echo($useremail)?>', '<?php echo($sandbox_token)?>')">Launch Development Sandbox</a>
+					<a style="width:320px" id="isc-launch-eval-btn" class="isc_btn" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Launch Development Sandbox</a>
 				</div>
 				<div id="isc-waiting-area"></div>
 			</div>
@@ -1391,19 +1367,19 @@ function show_eval_creds($atts = [], $content = null) {
 		ob_start();
 		?>
 		<a name="getsandbox"></a>
-		<div class="isc_infobox">
+		<div class="isc_infobox isc_infobox--tip">
 			<div class="isc_infobox--icon">
-				<noscript><img src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png"></noscript>
-				<img class=" ls-is-cached lazyloaded" src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png" data-src="/wp-content/themes/isctwentyeleven/assets/images/icon-info.png">
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
 				<p class="h_4" style="margin:0">Sandbox Settings</p>
 				<ul>
-					<li>IDE: <?php echo $url = $all_meta_for_user['sandbox_ide_url']?></li>
-					<li>InterSystems IRIS Management Portal: <?php echo $url = $all_meta_for_user['sandbox_smp']?></li>
-					<li>External IDE URL: <?php echo $url = $all_meta_for_user['sandbox_ext_ide_ip']?></li>
-					<li>External IDE Port: <?php echo $url = $all_meta_for_user['sandbox_ext_ide_port']?></li>
-					<li>Expires: <?php echo $url = $all_meta_for_user['sandbox_expires']?></li>
+					<li>username / password: <code><?php echo $all_meta_for_user['sandbox_username']?></code> / <code><?php echo $all_meta_for_user['sandbox_password']?></code></li>
+					<li>IDE: <a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>"><?php echo $all_meta_for_user['sandbox_ide_url']?></a></li>
+					<li>InterSystems IRIS Management Portal: <a href="<?php echo $all_meta_for_user['sandbox_smp']?>"><?php echo $all_meta_for_user['sandbox_smp']?></a></li>
+					<li>External IDE Address: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></strong></li>
+					<li>External IDE Port: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></strong></li>
+					<li>Expires: <strong><?php echo $all_meta_for_user['sandbox_expires']?></strong></li>
 				</ul>
 			</div>
 		</div>
@@ -1418,22 +1394,28 @@ add_shortcode('iris_eval_creds', 'show_eval_creds');
 function show_iris_eval_setting($atts = [], $content = null) {
 	$values = shortcode_atts( array(
 		'setting' => null,
+		'fallback' => ""
 	), $atts);
+	if ( $values['setting'] == null ) 
+		return 'MISSING SETTING VALUE';
+
 	$user_id = get_current_user_id();
-	if ( $values['setting'] == null ) return '';
-	if ( $user_id < 1 ) return '';
+	if ( $user_id < 1 ) 
+		return ($values['fallback']);
 	
 	$all_meta_for_user = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
-	if ( !array_key_exists($values['setting'], $all_meta_for_user) ) return '';
+	if ( !array_key_exists($values['setting'], $all_meta_for_user) ) 
+		return ($values['fallback']);
 
 	$val = $all_meta_for_user[$values['setting']];
 	if ( $val ) {
-		return " <code>(Your sandbox: {$val})</code>";
+		return "{$content}{$val}";
 	}
 }
 add_shortcode('iris_eval_settings', 'show_iris_eval_setting');
 
 function sandbox_config_callback() {
+	error_log("In sandbox_config_callback");
 	if ( !isset($_POST) || empty($_POST) || !is_user_logged_in() ) {
 		header('HTTP/1.1 400 Empty POST Values');
 		echo 'Could Not Verify POST Values.';
@@ -1459,8 +1441,28 @@ function sandbox_config_callback() {
 	update_user_meta( $user_id, 'sandbox__isc_port', $sandbox__isc_port);
 	$sandbox_expires = sanitize_text_field( $_POST['exp']);
 	update_user_meta( $user_id, 'sandbox_expires', $sandbox_expires);
-	exit;
+
+	header('HTTP/1.1 200');
+	echo 'Successful POST: ISC Sandbox config';
+exit;
 }
 add_action('wp_ajax_nopriv_sandbox_config_cb', 'sandbox_config_callback');
 add_action('wp_ajax_sandbox_config_cb', 'sandbox_config_callback');
-/** end InterSystems Learning Services Evaluation Service Implementation **/
+/** end InterSystems InterSystems Sandbox Implementation **/
+
+/** 
+ * InterSystems CUSTOM GLOBAL VARIABLES
+ */
+function isc_global_vars() {
+
+	global $isc_globals;
+	$isc_globals = array(
+
+		'sanbox_token_service'  => 'https://lsiris.intersystems.com/test-iris/gs',
+		'sso_registration_page'  => 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=',
+		'sso_login_page'      => 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=',
+	);
+
+}
+add_action( 'parse_query', 'isc_global_vars' );
+/** InterSystems CUSTOM GLOBAL VARIABLES */
