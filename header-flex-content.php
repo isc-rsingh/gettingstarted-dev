@@ -137,7 +137,8 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 						'container'      => false,
 						'depth'          => 2,
 						'menu_class'     => 'primary-menu',
-						'items_wrap'     => '<p class="menu-title">' . esc_html(isc_get_menu_name('primary')) . '</p><ul class="%2$s">%3$s</ul><div class="menu-cta"><div class="menu-cta__text">' . $bottom_cta . '</div><div class="menu-cta__btn">' . $bottom_cta_link . '</div></div>',
+						// 'items_wrap'     => '<p class="menu-title">' . esc_html(isc_get_menu_name('primary')) . '</p><ul class="%2$s">%3$s</ul><div class="menu-cta"><div class="menu-cta__text">' . $bottom_cta . '</div><div class="menu-cta__btn">' . $bottom_cta_link . '</div></div>',
+						'items_wrap'     => '<p class="menu-title">' . esc_html(isc_get_menu_name('primary')) . '</p><ul class="%2$s">%3$s</ul>',
 						'walker'         => new Isc_Walker()
 					)
 				);
