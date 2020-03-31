@@ -1278,12 +1278,22 @@ add_action('openid-connect-generic-redirect-user-back', function( $redirect_url,
  * We use JavaScript so the UI can be non-blocking and show a loading animation while the user 
  * waits 20-40 seconds for their containers to spin up.
  */
-function sandbox_not_expired() {
+function sandbox_expired() {
+	if ( !sandbox_exists() ) return True;
+
 	$user_id = get_current_user_id();
-	$sandbox_expires_date = strtotime( get_user_meta( $user_id, 'sandbox_expires', true) );
+	$sandbox_expires_date = strtotime( get_user_meta( $user_id, 'sandbox_expires', True) );
 	$nowdate = current_time( 'timestamp', 0 );
 	$exp = ($sandbox_expires_date - $nowdate) < 1 ? True : False;
 	return ( $exp );
+}
+
+function sandbox_exists() {
+	$user_id = get_current_user_id();
+	if ( get_user_meta( $user_id, 'sandbox_expires', True) == "" ) {
+		return False;
+	}
+	return True;
 }
 
 // Show evaluation instance credentials
@@ -1329,7 +1339,7 @@ function show_eval_creds($atts = [], $content = null) {
 	// If not, do all the things to launch one
 	$output = '';
 	$all_meta_for_user = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
-	if ( sandbox_not_expired() ) {
+	if ( sandbox_expired() ) {
 		// Sandbox is either non-existent, or expired
 		// Get a token for creating an evaluation sandbox for the user
 		// Returns 200 and a token that is valid for the provided email address for 10 minutes if email is associated with a fully-registered SSO user.
@@ -1344,6 +1354,9 @@ function show_eval_creds($atts = [], $content = null) {
 		$sandbox_meta_url = $isc_globals['sanbox_token_service'] . '/get-container-info/' . $useremail;
 		error_log("sandbox_meta_url: $sandbox_meta_url");
 
+		// Show an explanation of sandbox has expired
+		$expired_messsage = sandbox_exists() ? "<br><em>Your old sandbox has expired. Please provision a new one.</em>" : "";
+
 		ob_start();
 		?>
 		<a name="getsandbox"></a>
@@ -1352,11 +1365,11 @@ function show_eval_creds($atts = [], $content = null) {
 				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p><?php echo ($values['launch_box_content'])?></p>
-				<div style="text-align: center">
-					<a style="width:320px" id="isc-launch-eval-btn" class="isc_btn" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Launch Development Sandbox</a>
-				</div>
+				<p><?php echo ($values['launch_box_content'])?><?php echo $expired_messsage?></p>
 				<div id="isc-waiting-area"></div>
+				<div style="text-align: center">
+					<a style="width:320px" id="isc-launch-eval-btn" class="isc_btn" href="#" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Launch Development Sandbox</a>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -1373,14 +1386,46 @@ function show_eval_creds($atts = [], $content = null) {
 			</div>
 			<div class="isc_infobox--content">
 				<p class="h_4" style="margin:0">Sandbox Settings</p>
-				<ul>
+				<!-- <ul class="isc_infobox--sandbox--settings">
 					<li>username / password: <code><?php echo $all_meta_for_user['sandbox_username']?></code> / <code><?php echo $all_meta_for_user['sandbox_password']?></code></li>
-					<li>IDE: <a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>"><?php echo $all_meta_for_user['sandbox_ide_url']?></a></li>
-					<li>InterSystems IRIS Management Portal: <a href="<?php echo $all_meta_for_user['sandbox_smp']?>"><?php echo $all_meta_for_user['sandbox_smp']?></a></li>
+					<li>IDE: <a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank"><?php echo $all_meta_for_user['sandbox_ide_url']?></a></li>
+					<li>Management Portal: <a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank"><?php echo $all_meta_for_user['sandbox_smp']?></a></li>
 					<li>External IDE Address: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></strong></li>
 					<li>External IDE Port: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></strong></li>
 					<li>Expires: <strong><?php echo $all_meta_for_user['sandbox_expires']?></strong></li>
-				</ul>
+				</ul> -->
+				<table>
+						<tbody>
+							<tr>
+								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Web IDE (Theia)</a></td>
+								<td><?php echo $all_meta_for_user['sandbox_ide_url']?></strong></td>
+							</tr>
+							<tr>
+								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank">Management Portal</a></strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_smp']?></td>
+							</tr>
+							<tr>
+								<td><strong>username</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_username']?></td>
+							</tr>
+							<tr>
+								<td><strong>password</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_password']?></td>
+							</tr>
+							<tr>
+								<td><strong>External IDE Address</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></td>
+							</tr>
+							<tr>
+								<td><strong>External IDE Port</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
+							</tr>
+							<tr>
+								<td><strong>Expiration</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_expires']?></td>
+							</tr>
+						</tbody>
+					</table>
 			</div>
 		</div>
 		
@@ -1393,7 +1438,8 @@ add_shortcode('iris_eval_creds', 'show_eval_creds');
 
 function show_iris_eval_setting($atts = [], $content = null) {
 	$values = shortcode_atts( array(
-		'setting' => null,
+		'setting' => null, 
+		'linktext' => null, 
 		'fallback' => ""
 	), $atts);
 	if ( $values['setting'] == null ) 
@@ -1409,7 +1455,11 @@ function show_iris_eval_setting($atts = [], $content = null) {
 
 	$val = $all_meta_for_user[$values['setting']];
 	if ( $val ) {
-		return "{$content}{$val}";
+		if ( $values['linktext'] ) {
+			return '<a href="{$val}" target="_blank">' . $values['linktext'] . '</a>';
+		} else {
+			return "{$val}";
+		}
 	}
 }
 add_shortcode('iris_eval_settings', 'show_iris_eval_setting');
