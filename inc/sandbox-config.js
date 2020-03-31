@@ -19,15 +19,17 @@ function sandbox_config_save(config_info) {
 
 function launcheval(sandbox_meta_url, token) {
     jQuery(document).ready(function($){ 
-        $('#isc-launch-eval-btn').html('Launching...')
+        $('#isc-launch-eval-btn').hide()
         // @TODO this is where we can put something interesting to watch for the minute it takes for the containers to spin up...
+        $('#isc-waiting-area').html('<video autoplay="true" height="360" width="640" src="/wp-content/uploads/2020/03/tryiris-640x360_2.mp4" type="video/mp4">')
         $.ajax(sandbox_meta_url, {
             type: 'POST', 
             data: {}, 
             dataType: 'json', 
-            timeout: 500000, 
+            timeout: 5000000, 
             headers: {
-                "Authorization": token
+                "Authorization": token, 
+                // "Access-Control-Allow-Origin": "https://lsiris.intersystems.com/*"
             },
             success: function(data, status, xhr) {
                 console.log("Sending config data to sandbox_config_save()...")
@@ -36,8 +38,8 @@ function launcheval(sandbox_meta_url, token) {
                 location.reload()
             },
             error: function(jqXhr, textStatus, errorMessage) {
-                var emsg = 'Error: <b>' + errorMessage + '</b>'
-                emsg += '<br/>' + textStatus
+                var emsg = '<code>Error: <b>' + errorMessage + '</b>'
+                emsg += '<br/>' + textStatus + '</code>'
                 $('#isc-waiting-area').html(emsg)
             }
         })
