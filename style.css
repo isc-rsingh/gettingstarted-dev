@@ -4128,7 +4128,7 @@ p.comment-form-comment {
 
 /** Raj */
 :root {
-  --border: rgb(48, 48, 48);
+  --border: rgb(17, 14, 14);
   --iscbluelight: #bfe4e3;
   --iscblue: #333695;
   --iscgreenlight: #bfe4e3;
@@ -4147,9 +4147,7 @@ p.comment-form-comment {
   --linkcolor: #000000;
   --iscstopsecondary: var(--iscgraylight);
   --font-family-default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --font-family-heading: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  /* --font-family-default: "Noto Sans", Helvetica, Arial, sans-serif; */
-  /* --font-family-heading: "Noto Sans", Roboto, "Source Sans Pro", Helvetica, Arial, sans-serif; */
+  --font-family-heading: "Gotham A", "Gotham B";
   --font-weight-default: 400;
   --font-size-default: 16px;
   --guidepost-height: 320px;
@@ -4627,7 +4625,7 @@ footer .nav-block ul li a {
 /* end Raj */
 body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-text table,
 .acf_content.page-template-page-flex-content table, .related-links__link__text, .related-resources__resource__text, .p_sm, .quotes-carousel .column__info__text p, .learning-table__text p, .up-next__text, .p_lg, .completion-time .time, .time_text, .quotes-carousel .column__carousel .quote__text, .quote_text, .footer-flex-content .footer-menu li a, .footer-flex-content .footer-text, .footer_text, .footer-flex-content .footer-legal p, .footer_legal, .navbar__nav .menu-title, .navbar__nav .menu-cta__text, .navbar__nav .primary-menu .sub-menu .menu-item {
-  font-family: "Gotham A", "Gotham B";
+  font-family: system-ui, "Gotham A", "Gotham B";
   font-style: normal;
   font-weight: 400; }
 
@@ -4696,7 +4694,7 @@ body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-t
 
 .featured-items .item__text, .featured-boxes .box__text, .p, p {
   font-size: 16px;
-  letter-spacing: -0.2px;
+  /* letter-spacing: -0.2px; */
   line-height: 26px; }
   @media (min-width: 992px) {
     .featured-items .item__text, .featured-boxes .box__text, .p, p {
@@ -4748,7 +4746,7 @@ body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-t
 
 .isc_btn {
   position: relative;
-  background: #00B2AA;
+  background: #01A09C;
   border: 2px solid #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   font-size: 16px;
@@ -4778,7 +4776,7 @@ body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-t
   font-size: 16px;
   letter-spacing: -0.18px;
   line-height: 26px;
-  color: #00B2AA;
+  color: #01A09C;
   vertical-align: middle; }
   .isc_link:after {
     margin-left: 8px;
@@ -4792,7 +4790,7 @@ body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-t
     width: 10px;
     height: 10px; }
   .isc_link:visited, .isc_link:active, .isc_link:link {
-    color: #00B2AA; }
+    color: #01A09C; }
   .isc_link:hover:after, .isc_link:focus:after {
     -webkit-transform: translateX(4px);
             transform: translateX(4px); }
@@ -5039,7 +5037,7 @@ a:visited {
   justify-content: space-between;
 }
 .isc_infobox--tip {
-    border: 5px solid #00B2AA; }
+    border: 5px solid #01A09C; }
 .isc_infobox--tip .isc_infobox--icon img {
       max-width: 18px; }
 .isc_infobox--warning {
@@ -5264,9 +5262,10 @@ ol.twenty {
       margin-bottom: 0; }
       @media (min-width: 992px) {
         .navbar__nav .menu-title {
-          padding: 0 50px 30px;
+          padding: 0 50px 10px;
           font-size: 20px;
-          letter-spacing: -0.25px; } }
+          letter-spacing: -0.25px;
+          font-weight: 800; } }
     .navbar__nav .menu-cta {
       position: relative;
       margin-top: auto;
@@ -5334,7 +5333,7 @@ ol.twenty {
             left: 0;
             height: 100%;
             width: 3px;
-            background-color: #00B2AA; }
+            background-color: #01A09C; }
           .navbar__nav .primary-menu .menu-item a:hover:after, .navbar__nav .primary-menu .menu-item a:focus:after {
             content: '';
             display: block;
@@ -5364,7 +5363,7 @@ ol.twenty {
             left: 0;
             height: 100%;
             width: 3px;
-            background-color: #00B2AA; }
+            background-color: #01A09C; }
           .navbar__nav .primary-menu .menu-item.current_page_item > a:after {
             content: '';
             display: block;
@@ -5527,7 +5526,7 @@ ol.twenty {
       .footer-flex-content .footer-menu li:last-child {
         margin-right: 0; }
       .footer-flex-content .footer-menu li a {
-        color: #00B2AA; }
+        color: #01A09C; }
   .footer-flex-content .footer-text {
     margin: 0; }
     @media (min-width: 768px) {
@@ -5688,11 +5687,11 @@ ol.twenty {
               -webkit-transition: all 200ms ease-in-out;
               transition: all 200ms ease-in-out; }
               .flex-content__sidebar__links li a:hover {
-                color: #00B2AA; }
+                color: #01A09C; }
               .flex-content__sidebar__links li a:focus {
                 opacity: 0.65; }
             .flex-content__sidebar__links li.active a {
-              color: #00B2AA; }
+              color: #01A09C; }
               .flex-content__sidebar__links li.active a:hover, .flex-content__sidebar__links li.active a:focus {
                 opacity: 0.75; } }
 
@@ -5707,7 +5706,7 @@ ol.twenty {
   .acf_content.page-template-page-flex-content ul li {
     padding-left: 45px;
     position: relative;
-    margin-top: 25px; }
+    margin-top: 8px; }
     .default-text ul li:before,
     .acf_content.page-template-page-flex-content ul li:before {
       content: "\25AA";
@@ -5725,7 +5724,7 @@ ol.twenty {
 .acf_content.page-template-page-flex-content p a:not(.isc_btn),
 .acf_content.page-template-page-flex-content li a:not(.isc_btn) {
   text-decoration: underline;
-  color: #00B2AA; }
+  color: #01A09C; }
   .default-text p a:not(.isc_btn):hover, .default-text p a:not(.isc_btn):focus, .default-text li a:not(.isc_btn):hover, .default-text li a:not(.isc_btn):focus,
   .acf_content.page-template-page-flex-content p a:not(.isc_btn):hover,
   .acf_content.page-template-page-flex-content p a:not(.isc_btn):focus,
@@ -6265,7 +6264,7 @@ ol.twenty {
   .related-links__link:before {
     content: '';
     position: absolute;
-    background: #00B2AA;
+    background: #01A09C;
     display: block;
     width: 5px;
     height: calc(100% + 10px);
@@ -6286,9 +6285,9 @@ ol.twenty {
   .related-links__link:last-child {
     margin-bottom: 0; }
   .related-links__link:hover, .related-links__link:focus {
-    border: 5px solid #00B2AA; }
+    border: 5px solid #01A09C; }
     .related-links__link:hover .related-links__link__title, .related-links__link:focus .related-links__link__title {
-      color: #00B2AA; }
+      color: #01A09C; }
     .related-links__link:hover:after, .related-links__link:focus:after {
       background-image: url("./assets/images/link-arrow.svg"); }
   .related-links__link__title {
@@ -6327,9 +6326,9 @@ ol.twenty {
   .related-resources__resource:last-child {
     margin-bottom: 0; }
   .related-resources__resource:hover, .related-resources__resource:focus {
-    border: 5px solid #00B2AA; }
+    border: 5px solid #01A09C; }
     .related-resources__resource:hover .related-resources__resource__title, .related-resources__resource:focus .related-resources__resource__title {
-      color: #00B2AA; }
+      color: #01A09C; }
     .related-resources__resource:hover:after, .related-resources__resource:focus:after {
       background-image: url("./assets/images/link-external.svg"); }
   .related-resources__resource__title {
@@ -6408,7 +6407,7 @@ ol.twenty {
   .select-language__language:last-child {
     margin-bottom: 0; }
   .select-language__language:hover, .select-language__language:focus {
-    border: 5px solid #00B2AA; }
+    border: 5px solid #01A09C; }
     .select-language__language:hover:after, .select-language__language:focus:after {
       background-image: url("./assets/images/link-arrow.svg"); }
   .select-language__language__image {
