@@ -1844,8 +1844,8 @@ p, div.para {
 ul, ol {
   margin: 0 0 1.625em 2.5em; }
 
-ul {
-  list-style: square; }
+/* ul {
+  list-style: square; } */
 
 ol {
   list-style-type: decimal; }
@@ -4623,6 +4623,10 @@ footer .nav-block ul li a {
 
 /* end banner */
 /* end Raj */
+.default-text {
+  overflow-wrap: break-word;
+}
+
 body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-text table,
 .acf_content.page-template-page-flex-content table, .related-links__link__text, .related-resources__resource__text, .p_sm, .quotes-carousel .column__info__text p, .learning-table__text p, .up-next__text, .p_lg, .completion-time .time, .time_text, .quotes-carousel .column__carousel .quote__text, .quote_text, .footer-flex-content .footer-menu li a, .footer-flex-content .footer-text, .footer_text, .footer-flex-content .footer-legal p, .footer_legal, .navbar__nav .menu-title, .navbar__nav .menu-cta__text, .navbar__nav .primary-menu .sub-menu .menu-item {
   font-family: system-ui, "Gotham A", "Gotham B";
@@ -5700,7 +5704,7 @@ ol.twenty {
 --------------------------------------------------------------*/
 .default-text ul,
 .acf_content.page-template-page-flex-content ul {
-  list-style: none;
+  /* list-style: none; */
   margin-left: 0; }
   .default-text ul li,
   .acf_content.page-template-page-flex-content ul li {
@@ -5809,8 +5813,8 @@ ol.twenty {
     padding-left: 45px;
     position: relative;
     margin-top: 25px; }
-    .default-text ol li:before,
-    .acf_content.page-template-page-flex-content ol li:before {
+    .default-text ol > li:before,
+    .acf_content.page-template-page-flex-content ol > li:before {
       content: counter(item);
       counter-increment: item;
       position: absolute;
@@ -5830,16 +5834,16 @@ ol.twenty {
       height: 18px;
       width: 18px;
       border-radius: 50%; }
-    .default-text ol li ol, .default-text ol li ul,
+    .default-text ol li ol, 
     .acf_content.page-template-page-flex-content ol li ol,
     .acf_content.page-template-page-flex-content ol li ul {
       list-style-type: upper-alpha;
       padding-left: 30px; }
-      .default-text ol li ol li, .default-text ol li ul li,
+      .default-text ol li ol li,
       .acf_content.page-template-page-flex-content ol li ol li,
       .acf_content.page-template-page-flex-content ol li ul li {
         padding-left: 10px; }
-        .default-text ol li ol li:before, .default-text ol li ul li:before,
+        .default-text ol li ol li:before,
         .acf_content.page-template-page-flex-content ol li ol li:before,
         .acf_content.page-template-page-flex-content ol li ul li:before {
           display: none; }
