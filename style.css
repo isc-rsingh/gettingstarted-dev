@@ -6427,8 +6427,10 @@ ol.twenty {
   margin: 0 12px;
 }
 
+/* hides long descriptions (used to have long alternate text for images */
 .desc {
   visibility: hidden;
+  display: none;
 }
 ul.evalinfobox {
   margin: 0;
