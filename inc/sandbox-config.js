@@ -4,14 +4,50 @@ function sandbox_config_save(config_info) {
         $.ajax({
             url: ajax_url, 
             type: 'POST', 
+            async: true, 
             data: config_info, 
             success: function(results) {
                 console.log('sandbox_config_save: user meta updated!')
+                location.reload()
             },
-            error: function(data) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 console.log("sandbox_config_save: request failed: ")
-                console.log("response text: " + data.responseText)
-                console.log("status text: " + data.statusText)
+                if (textStatus==="timeout") {
+                    console.log("Call has timed out")
+                } else {
+                    console.log("response text: " + errorThrown)
+                }
+            }
+        })
+    })
+}
+
+function sandbox_build_progress(pollurl, token) {
+    jQuery(document).ready(function($){
+        $.ajax({
+            dataType: "json", 
+            url: pollurl, 
+            type: 'GET', 
+            headers: {
+                "Authorization": token, 
+            },
+            success: function(response, status, xhr) {
+                resp = response['state']
+                console.log("Polling response: " + resp)
+                if ( resp == "BUILDING" ) {
+                    setTimeout(sandbox_build_progress, 2000, pollurl, token)
+                } else if ( resp == "SUCCESS" ) {
+                    console.log("Polling done, saving config info")
+                    console.log(response.data)
+                    sandbox_config_save(response.data)
+                } else {
+                    console.log("ERROR IN POLLING...")
+                }
+            },
+            error: function(jqXhr, textStatus, errorMessage) {
+                var emsg = '<code>Error: <b>' + errorMessage + '</b>'
+                emsg += '<br/>' + textStatus + '</code>'
+                $('#isc-waiting-area').html(emsg)
             }
         })
     })
@@ -20,28 +56,29 @@ function sandbox_config_save(config_info) {
 function launcheval(sandbox_meta_url, token) {
     jQuery(document).ready(function($){ 
         $('#isc-launch-eval-btn').hide()
-        // @TODO this is where we can put something interesting to watch for the minute it takes for the containers to spin up...
         $('#isc-waiting-area').html('<video autoplay="true" height="360" width="640" src="/wp-content/uploads/2020/03/tryiris-640x360_2.mp4" type="video/mp4">')
-        $.ajax(sandbox_meta_url, {
-            type: 'POST', 
+        $.ajax({
+            url: sandbox_meta_url, 
             data: {}, 
-            dataType: 'json', 
-            timeout: 5000000, 
+            type: 'GET', 
             headers: {
                 "Authorization": token, 
                 // "Access-Control-Allow-Origin": "https://lsiris.intersystems.com/*"
             },
+            // crossDomain: true, 
+            // xhrFields: {
+            //     withCredentials: true
+            // }, 
             success: function(data, status, xhr) {
-                console.log("Sending config data to sandbox_config_save()...")
-                console.log(data)
-                sandbox_config_save(data)
-                location.reload()
+                var pollurl = xhr.getResponseHeader("Location")
+                console.log("Success getting polling URL:")
+                console.log(pollurl)
+                sandbox_build_progress(pollurl, token)
             },
             error: function(jqXhr, textStatus, errorMessage) {
-                var emsg = '<code>Error: <b>' + errorMessage + '</b>'
-                emsg += '<br/>' + textStatus + '</code>'
+                var emsg = '<code>' + textStatus + ': <b>' + errorMessage + '</b>'
                 $('#isc-waiting-area').html(emsg)
             }
         })
-    });
+    })
 }

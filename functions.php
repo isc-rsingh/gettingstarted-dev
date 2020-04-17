@@ -1162,6 +1162,8 @@ function isc_get_attachment( $attachment_id, $size = '' ) {
 
 // Button with option for video modal popup by adding class .js-modalTrigger and using video ID for brightcove video for iframe embed
 function isc_button_shortcode($atts) {
+	global $isc_globals;
+
 	$values = shortcode_atts( array(
 		'class' => "isc_btn",
 		'href' => "#",
@@ -1177,7 +1179,7 @@ function isc_button_shortcode($atts) {
 		$output .= '<div class="video-container">';
 		$output .= '<div class="video">';
 		$output .= '<div class="video-responsive">';
-		$output .= '<iframe src="https://players.brightcove.net/610060920001/SJUmxczP_default/index.html?videoId=' . $values['href'] . '" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>';
+		$output .= '<iframe src="https://players.brightcove.net/610060920001/' . $isc_globals['brightcove_video_id'] . '_default/index.html?videoId=' . $values['href'] . '" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>';
 		$output .= '</div>';
 		$output .= '</div>';
 		$output .= '</div>';
@@ -1296,11 +1298,17 @@ function sandbox_exists() {
 	return True;
 }
 
+function three_days_from_now() {
+	$nowtime = current_time( 'timestamp', 0 );
+	$thentime = $nowtime + (86400 * 3); // # of seconds in a day times 3 days
+	return $thentime;
+}
+
 // Show evaluation instance credentials
 function show_eval_creds($atts = [], $content = null) {
 	$values = shortcode_atts( array(
-		'login_box_content' => "If you don’t have InterSystems IRIS yet, get a free, online development sandbox here.",
-		'launch_box_content' => "Provision your free, online sandbox environment. Includes InterSystems IRIS and the Theia Web IDE."
+		'login_box_content' => "If you don’t have InterSystems IRIS yet, get a free, online development sandbox here. Log in with your InterSystems universal account, or register for one below.",
+		'launch_box_content' => "Provision your free, online sandbox environment. Includes InterSystems IRIS and a browser-based IDE."
 	), $atts);
 
 	$user_id = get_current_user_id();
@@ -1325,8 +1333,8 @@ function show_eval_creds($atts = [], $content = null) {
 			<div class="isc_infobox--content">
 				<p><?php echo ($values['login_box_content'])?></p>
 				<div  style="text-align: center">
-					<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a>	
 					<?php echo (do_shortcode($content)) ?>
+					<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a>	
 				</div>
 			</div>
 		</div>
@@ -1351,7 +1359,7 @@ function show_eval_creds($atts = [], $content = null) {
 		$token_url = $isc_globals['sanbox_token_service'] . '/authorize/' . $useremail;
 		$sandbox_token = file_get_contents($token_url);
 		error_log("token_url: $token_url");
-		$sandbox_meta_url = $isc_globals['sanbox_token_service'] . '/get-container-info/' . $useremail;
+		$sandbox_meta_url = $isc_globals['sanbox_token_service'] . '/new-container/' . $useremail;
 		error_log("sandbox_meta_url: $sandbox_meta_url");
 
 		// Show an explanation of sandbox has expired
@@ -1414,11 +1422,11 @@ function show_eval_creds($atts = [], $content = null) {
 							</tr>
 							<tr>
 								<td><strong>External IDE Address</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></td>
+								<td><?php echo $all_meta_for_user['sandbox_isc_ip']?></td>
 							</tr>
 							<tr>
 								<td><strong>External IDE Port</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
+								<td><?php echo $all_meta_for_user['sandbox_isc_port']?></td>
 							</tr>
 							<tr>
 								<td><strong>Expiration</strong></td>
@@ -1487,10 +1495,11 @@ function sandbox_config_callback() {
 	update_user_meta( $user_id, 'sandbox_ext_ide_port', $sandbox_ext_ide_port);
 	$sandbox_isc_ip = sanitize_text_field( $_POST['InterSystemsIP']);
 	update_user_meta( $user_id, 'sandbox_isc_ip', $sandbox_isc_ip);
-	$sandbox__isc_port = sanitize_text_field( $_POST['InterSystemsPort']);
-	update_user_meta( $user_id, 'sandbox__isc_port', $sandbox__isc_port);
+	$sandbox_isc_port = sanitize_text_field( $_POST['InterSystemsPort']);
+	update_user_meta( $user_id, 'sandbox_isc_port', $sandbox_isc_port);
 	$sandbox_expires = sanitize_text_field( $_POST['exp']);
 	update_user_meta( $user_id, 'sandbox_expires', $sandbox_expires);
+	update_user_meta( $user_id, 'sandbox_expires', date('c', three_days_from_now()) );
 
 	header('HTTP/1.1 200');
 	echo 'Successful POST: ISC Sandbox config';
@@ -1507,12 +1516,22 @@ function isc_global_vars() {
 
 	global $isc_globals;
 	$isc_globals = array(
-
 		'sanbox_token_service'  => 'https://lsiris.intersystems.com/test-iris/gs',
-		'sso_registration_page'  => 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=',
-		'sso_login_page'      => 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=',
+		'sso_registration_page'  => 'https://login.intersystems.com/login/SSO.UI.Register.cls?referrer=',
+		'sso_login_page'      => 'https://login.intersystems.com/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=',
 	);
-
+	$h = home_url();
+	// things to do if this is a development site
+	if ( strpos($h, 'dev-start') ) {
+		error_log("in dev");
+		$isc_globals['sso_registration_page'] = 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=';
+		$isc_globals['sso_login_page'] = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=';
+	}
+	// things to do if this is a health site
+	$isc_globals['brightcove_video_id'] = 'WZIjldXv6';
+	if ( strpos($h, 'health') ) {
+		$isc_globals['brightcove_video_id'] = 'k2mhikLom';
+	}
 }
 add_action( 'parse_query', 'isc_global_vars' );
 /** InterSystems CUSTOM GLOBAL VARIABLES */
