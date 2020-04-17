@@ -3,6 +3,7 @@
 $module_index = get_row_index();
 $section_id = 'section-' . $module_index;
 
+$title = get_sub_field('title');
 $items = get_sub_field('items-4');
 
 ?>
@@ -10,6 +11,10 @@ $items = get_sub_field('items-4');
 <section class="featured-items <?php echo $section_id; ?>">
 
 	<?php include(locate_template('/templates/partials/module_settings.php')); ?>
+
+	<?php if($title) : ?>
+		<h2 class="h_2" style="text-align: center"><?php echo $title; ?></h2>
+	<?php endif; ?>	
 
 	<?php if($items) : ?>
 		<div class="row">
