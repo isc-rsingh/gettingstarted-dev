@@ -1234,6 +1234,7 @@ if( function_exists('acf_add_options_page') ) {
  * Drift Chatbot Implementation
  * Puts the Drift JavaScript in the page header.
  */
+/*****
 add_action('wp_head', 'install_drift');
 function install_drift() {
 ?>
@@ -1242,6 +1243,7 @@ function install_drift() {
 <!-- End of Async Drift Code --> 
 <?php 
 };
+ ******/
 /** End Drift Chatbot Implementation **/
 
 
@@ -1313,6 +1315,9 @@ function show_eval_creds($atts = [], $content = null) {
 
 	$user_id = get_current_user_id();
 
+	// If user has just registered, they won't be logged in and have a user id, but there will be an ssoToken parameter in the URL, so we can just log them in
+
+
 	// When visitor is not logged in (via ISC SSO), then they must do this before launching sandbox
 	if ( $user_id < 1 ) {
 		global $wp;
@@ -1334,7 +1339,7 @@ function show_eval_creds($atts = [], $content = null) {
 				<p><?php echo ($values['login_box_content'])?></p>
 				<div  style="text-align: center">
 					<?php echo (do_shortcode($content)) ?>
-					<a class="isc_btn" href="<?php print $ssoregister; ?>">Register</a>	
+					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn" href="' . $ssoregister . '">Register</a>')?>
 				</div>
 			</div>
 		</div>
@@ -1398,14 +1403,14 @@ function show_eval_creds($atts = [], $content = null) {
 					<li>username / password: <code><?php echo $all_meta_for_user['sandbox_username']?></code> / <code><?php echo $all_meta_for_user['sandbox_password']?></code></li>
 					<li>IDE: <a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank"><?php echo $all_meta_for_user['sandbox_ide_url']?></a></li>
 					<li>Management Portal: <a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank"><?php echo $all_meta_for_user['sandbox_smp']?></a></li>
-					<li>External IDE Address: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></strong></li>
-					<li>External IDE Port: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></strong></li>
+					<li>Server IP Address: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></strong></li>
+					<li>Server Port: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></strong></li>
 					<li>Expires: <strong><?php echo $all_meta_for_user['sandbox_expires']?></strong></li>
 				</ul> -->
 				<table>
 						<tbody>
 							<tr>
-								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Web IDE (Theia)</a></td>
+								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Cloud IDE</a></td>
 								<td><?php echo $all_meta_for_user['sandbox_ide_url']?></strong></td>
 							</tr>
 							<tr>
@@ -1421,11 +1426,11 @@ function show_eval_creds($atts = [], $content = null) {
 								<td><?php echo $all_meta_for_user['sandbox_password']?></td>
 							</tr>
 							<tr>
-								<td><strong>External IDE Address</strong></td>
+								<td><strong>Server IP Address</strong></td>
 								<td><?php echo $all_meta_for_user['sandbox_isc_ip']?></td>
 							</tr>
 							<tr>
-								<td><strong>External IDE Port</strong></td>
+								<td><strong>Server Port</strong></td>
 								<td><?php echo $all_meta_for_user['sandbox_isc_port']?></td>
 							</tr>
 							<tr>
@@ -1444,7 +1449,7 @@ function show_eval_creds($atts = [], $content = null) {
 }
 add_shortcode('iris_eval_creds', 'show_eval_creds');
 
-function show_iris_eval_setting($atts = [], $content = null) {
+function show_iris_eval_setting($atts = [], $content = "") {
 	$values = shortcode_atts( array(
 		'setting' => null, 
 		'linktext' => null, 
@@ -1464,9 +1469,9 @@ function show_iris_eval_setting($atts = [], $content = null) {
 	$val = $all_meta_for_user[$values['setting']];
 	if ( $val ) {
 		if ( $values['linktext'] ) {
-			return '<a href="{$val}" target="_blank">' . $values['linktext'] . '</a>';
+			return '<a href="' . $val . '" target="_blank">' . $values['linktext'] . '</a>' . $content;
 		} else {
-			return "{$val}";
+			return "{$val}" . $content;
 		}
 	}
 }
