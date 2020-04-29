@@ -4574,17 +4574,10 @@ h3.numbered::before {
 #trybuttons {
   text-align: center; }
 
-#trybuttons > div > a {
-  color: var(--iscoffwhite);
-  text-decoration: none; }
-
 #trybuttons > div {
   display: inline-block;
-  padding: 12px;
-  margin: 12px;
-  border-radius: 12px;
-  background-color: var(--iscgreen);
-  box-shadow: 2px 2px 5px var(--iscgraylight); }
+  margin: 4px 12px 24px 0;
+}
 
 /* footer */
 footer {
@@ -4905,6 +4898,13 @@ img {
 a:link,
 a:visited {
   color: #000; }
+a:hover {
+  color: var(--iscgreen);
+}
+a.isc_btn {
+  color: white;
+  text-decoration: none;
+}
 
 .container {
   padding-right: 25px;
@@ -6432,6 +6432,7 @@ ol.twenty {
   visibility: hidden;
   display: none;
 }
+
 ul.evalinfobox {
   margin: 0;
 }
