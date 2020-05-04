@@ -6436,3 +6436,14 @@ ol.twenty {
 ul.evalinfobox {
   margin: 0;
 }
+
+
+div.enlighter-default {
+  margin: 12px 0;
+  padding: 24px 0 8px;
+  font-family: "Roboto Mono", "Courier 10 Pitch", Courier, monospace;
+  font-size: 90%;
+  border-radius: 0;
+  border: 0;
+  border: 5px solid #eae9f4; /* var(--iscgraydark); */
+}

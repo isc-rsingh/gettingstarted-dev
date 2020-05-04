@@ -41,18 +41,23 @@ content:
 
 - anything bracketed by this shortcode will be output at the end of processing
 
-## Notes on Raj ISC modifications
+## Notes on ISC modifications
 
-
-## For SSO
+### For SSO
 
 Use OAuth plugin: https://github.com/daggerhart/openid-connect-generic
 
 In `openid-connect-generic-login-form.php` modify the function `function make_login_button()` to have class attributes that work for our theme.
 
-## For sandbox startup
+### For sandbox startup
 
 This ["Update user meta using with ajax"](https://wordpress.stackexchange.com/questions/216140/update-user-meta-using-with-ajax) question helped me figure out how to save data obtained via Javascript to the Wordpress PHP layer.
+
+### For EnlighterJS plugin compatibility with Autoptimize
+
+Add this to the "Exclude scripts from Autoptimize" under Settings->Autoptimize->JS, CSS & HTML
+
+`wp-content/plugins/enlighter/resources/`
 
 ## Production checklist
 
