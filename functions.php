@@ -1310,24 +1310,21 @@ function three_days_from_now() {
 function show_eval_creds($atts = [], $content = null) {
 	$values = shortcode_atts( array(
 		'login_box_content' => "If you don’t have InterSystems IRIS yet, get a free, online development sandbox here. Log in with your InterSystems universal account, or register for one below.",
-		'launch_box_content' => "Provision your free, online sandbox environment. Includes InterSystems IRIS and a browser-based IDE."
+		'launch_box_content' => "Provision your free, online sandbox environment. Includes InterSystems IRIS and a browser-based IDE.", 
+		'login_after_reg_box_content' => "Thanks for registering! Now login to launch your InterSystems IRIS sandbox"
 	), $atts);
 
 	$user_id = get_current_user_id();
-
-	// If user has just registered, they won't be logged in and have a user id, but there will be an ssoToken parameter in the URL, so we can just log them in
-
 
 	// When visitor is not logged in (via ISC SSO), then they must do this before launching sandbox
 	if ( $user_id < 1 ) {
 		global $wp;
 		global $isc_globals;
 		$thisurl = urlencode(home_url( $wp->request ) . '#getsandbox');
-		// $ssoregister = 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=' . esc_url($thisurl);
-		// $ssologin = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid
 		$ssoregister = $isc_globals['sso_registration_page'] . $thisurl;
 		$ssologin = $isc_globals['sso_login_page'] . $thisurl;
 		
+		// If user has just registered, they won't be logged in and have a user id, but there will be an ssoToken parameter in the URL, so we can just log them in
 		ob_start();
 		?>
 		<a name="getsandbox"></a>
@@ -1336,7 +1333,10 @@ function show_eval_creds($atts = [], $content = null) {
 				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p><?php echo ($values['login_box_content'])?></p>
+				<p>
+					<?php if ( !isset($_GET["ssoToken"]) ) echo ($values['login_box_content'])?>
+					<?php if ( isset($_GET["ssoToken"]) ) echo ($values['login_after_reg_box_content'])?>
+				</p>
 				<div  style="text-align: center">
 					<?php echo (do_shortcode($content)) ?>
 					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn" href="' . $ssoregister . '">Register</a>')?>
@@ -1357,7 +1357,6 @@ function show_eval_creds($atts = [], $content = null) {
 		// Get a token for creating an evaluation sandbox for the user
 		// Returns 200 and a token that is valid for the provided email address for 10 minutes if email is associated with a fully-registered SSO user.
 		// Otherwise returns 401 w/ error message
-		// TODO: change this to use cURL to be able to handle an error message (see https://thisinterestsme.com/send-get-request-with-php/)
 		$user_info = get_userdata($user_id);
 		$useremail = $user_info->user_email;
 		global $isc_globals;
