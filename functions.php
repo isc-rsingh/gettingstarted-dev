@@ -925,7 +925,7 @@ add_action( 'init', 'register_raj_nav_menu');
 function isc_note_irissetup_shortcode() {
 	$output = '<div class="isc_infobox">';
 	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-info.png""></div>';
-	$output .= '  <div class="isc_infobox--content">If you don’t have InterSystems IRIS set up yet,  <a href="http://www.intersystems.com/try" target="sandboxwindow">get a free development sandbox here</a>.</div>';
+	$output .= '  <div class="isc_infobox--content">If you don’t have InterSystems IRIS set up yet,  <a href="https://www.intersystems.com/try" target="sandboxwindow">get a free development sandbox here</a>.</div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -1452,6 +1452,8 @@ function show_iris_eval_setting($atts = [], $content = "") {
 	$values = shortcode_atts( array(
 		'setting' => null, 
 		'linktext' => null, 
+		'prefix' => "", 
+		'suffix' => "", 
 		'fallback' => ""
 	), $atts);
 	if ( $values['setting'] == null ) 
@@ -1470,7 +1472,7 @@ function show_iris_eval_setting($atts = [], $content = "") {
 		if ( $values['linktext'] ) {
 			return '<a href="' . $val . '" target="_blank">' . $values['linktext'] . '</a>' . $content;
 		} else {
-			return "{$val}" . $content;
+			return "{$values['prefix']}" . "{$val}" . "{$values['suffix']}" . $content;
 		}
 	}
 }
