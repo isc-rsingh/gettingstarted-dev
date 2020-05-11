@@ -26,7 +26,8 @@
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <meta name="viewport" content="width=device-width" />
 
-<?php if ( function_exists('cn_cookies_accepted') && cn_cookies_accepted() ) : ?>
+<!-- ?php if ( function_exists('cn_cookies_accepted') && cn_cookies_accepted() ) : ?> -->
+<?php if ( function_exists('activate_em_cookie_notification') ) : ?>
 	<!-- Google Tag Manager -->
 	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -44,13 +45,13 @@
 	wp_title( '|', true, 'right' );
 
 	// Add the blog name.
-	bloginfo( 'name' );
+	// bloginfo	( 'name' );
 
 	// Add the blog description for the home/front page.
-	$site_description = get_bloginfo( 'description', 'display' );
-if ( $site_description && ( is_home() || is_front_page() ) ) {
-	echo " | $site_description";
-}
+	// $site_description = get_bloginfo( 'description', 'display' );
+	// if ( $site_description && ( is_home() || is_front_page() ) ) {
+	// 	echo " | $site_description";
+	// }
 
 	// Add a page number if necessary:
 if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() ) {
@@ -92,7 +93,7 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 
 <body <?php body_class(); ?>>
 
-<?php if ( function_exists('cn_cookies_accepted') && cn_cookies_accepted() ) : ?>
+<?php if ( function_exists('activate_em_cookie_notification') ) : ?>
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PKG7GB"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
