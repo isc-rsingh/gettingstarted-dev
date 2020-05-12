@@ -118,8 +118,8 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 	<header class="navbar" role="banner">
 
  		<hgroup>
-			<h1 id="site-title"><span><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></span></h1>
-			<h2 id="site-description"><?php bloginfo( 'description' ); ?></h2>
+			<div id="site-title"><span><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></span></div>
+			<div id="site-description"><?php bloginfo( 'description' ); ?></div>
 		</hgroup>
 
 		<a href="/" class="navbar__logo" rel="home">
