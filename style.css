@@ -4132,7 +4132,7 @@ p.comment-form-comment {
   --iscbluelight: #bfe4e3;
   --iscblue: #333695;
   --iscgreenlight: #bfe4e3;
-  --iscgreen: var(--iscgreen);
+  --iscgreen: #01a09c;
   --iscyellow: #fffae5;
   --iscyellowdarker: #ffe680;
   --iscoffwhite: #fbfbfb;
@@ -4589,7 +4589,7 @@ body, .featured-items .item__text, .featured-boxes .box__text, .p, p, .default-t
 
 .isc_btn {
   position: relative;
-  background: var(--iscgreen);
+  background-color: var(--iscgreen);
   border: 2px solid #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   font-size: 16px;
