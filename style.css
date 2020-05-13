@@ -4291,160 +4291,6 @@ a.isc-card:hover {
   height: 18px;
   vertical-align: text-top; }
 
-/* li {
-	padding-bottom: 0.5em;
-} */
-/* Guidepost */
-.isc--guidepost2, .isc--guidepost2 a {
-  color: var(--iscgray); }
-
-.isc--guidepost2 ul, .isc--guidepost2 .alternates {
-  list-style-type: none; }
-
-.isc--guidepost2 .alternates {
-  font-weight: 600; }
-
-.isc--guidepost2 .nextitem a {
-  color: var(--iscblue);
-  font-size: larger;
-  font-weight: 600;
-  background-color: var(--iscbluelight);
-  padding: 1px 4px;
-  border-radius: 4px; }
-
-.isc--guidepost2 .alternate a {
-  font-style: italic; }
-
-.entry-content table.isc--guidepost {
-  border-bottom: initial;
-  width: unset; }
-
-table.isc--guidepost.isc--end {
-  margin: 10px auto 200px auto;
-  width: 50%;
-  line-height: 1em; }
-
-.entry-content table.isc--guidepost td {
-  border-top: initial;
-  padding: initial; }
-
-.isc--guidepost {
-  border-spacing: 0; }
-
-tr.main--line td, tr.secondary--line td {
-  vertical-align: middle; }
-
-tr.main--line td {
-  background-color: var(--iscgreen); }
-
-table.isc--guidepost.isc--has--main--line {
-  margin: 80px 0 0 0; }
-
-tr.main--text td {
-  white-space: nowrap;
-  /* transform-origin: top right; */
-  -webkit-transform: rotate(-15deg);
-          transform: rotate(-15deg); }
-
-tr.main--text td a, tr.main--text td {
-  color: var(--iscgraylight);
-  margin: 0 0 0 22px; }
-
-tr.main--text td.main--stop--text a {
-  color: var(--iscblue);
-  font-weight: 600;
-  font-size: x-large; }
-
-td.stop--mid.stop--secondary {
-  height: var(--line-width);
-  /* height: calc( var(--line-width) * 3 ); */ }
-
-td.stop {
-  max-width: var(--line-width);
-  width: var(--line-width);
-  /* height: var(--line-width); */
-  max-height: var(--line-width); }
-
-td.between-stops {
-  width: calc( var(--line-width) * 3);
-  height: var(--line-width);
-  /* min-height: var(--line-width); */ }
-
-td.stop--left {
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%; }
-
-td.stop--left--first {
-  border-top-left-radius: 50%; }
-
-td.stop--right--last {
-  border-top-right-radius: 50%; }
-
-td.stop--right {
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%; }
-
-td.stop--bottom {
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%; }
-
-td.stop--top {
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%; }
-
-td.stop--left.stop--secondary {
-  border-top-left-radius: 0; }
-
-td.stop--secondary, td.between--lines {
-  background-color: var(--iscstopsecondary); }
-
-td.between--lines {
-  border-right: calc( var(--line-width) * .25) solid var(--iscoffwhite); }
-
-.stop--circle {
-  color: #ffffff;
-  background-color: #ffffff;
-  text-align: center;
-  border-radius: 50%;
-  height: calc( var(--line-width) / 2);
-  width: calc( var(--line-width) / 2);
-  margin: auto;
-  vertical-align: middle; }
-
-.stop--circle a {
-  text-decoration: none;
-  color: var(--iscoffwhite); }
-
-.stop--circle a:hover {
-  color: var(--iscgreenlight); }
-
-.stop--circle:hover {
-  background-color: var(--iscgreenlight); }
-
-.next--stop {
-  color: var(--iscblue);
-  background-color: var(--iscblue); }
-
-td.stop--col {
-  width: var(--line-width);
-  max-width: var(--line-width);
-  height: var(--line-width);
-  vertical-align: bottom; }
-
-table.isc--guidepost td.main--stop--text, table.isc--guidepost td.secondary--stop--text {
-  white-space: nowrap;
-  vertical-align: middle; }
-
-.main--stop--title > a, .secondary--stop--title > a {
-  color: var(--iscgraylight); }
-
-.secondary--stop--title {
-  margin-left: calc( var(--line-width) * .25); }
-
-.secondary--stop--title > a {
-  color: var(--iscgray); }
-
-/* end Guidepost */
 /* info boxes */
 .isc--infobox {
   position: relative;
@@ -6446,4 +6292,23 @@ div.enlighter-default {
   border-radius: 0;
   border: 0;
   border: 5px solid #eae9f4; /* var(--iscgraydark); */
+}
+
+#waitingtable p {
+  font-size: 11px;
+}
+
+.ldBar {
+  text-align: center;
+}
+.ldBar-label {
+  font-family: var(--font-family-default);
+}
+.ldBar path.mainline, .ldBar path.baseline {
+  stroke: var(--iscbluelight);
+  stroke-width: 10;
+}
+.ldBar path.mainline {
+  stroke: var(--iscblue);
+  stroke-width: 10;
 }
