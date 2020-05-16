@@ -56,7 +56,9 @@ function sandbox_build_progress(pollurl, token) {
 function launcheval(sandbox_meta_url, token) {
     jQuery(document).ready(function($){ 
         $('#isc-launch-eval-btn').hide()
-        $('#isc-waiting-area').html('<video autoplay="true" height="360" width="640" src="/wp-content/uploads/2020/03/tryiris-640x360_2.mp4" type="video/mp4">')
+        let waitingcontent = '<video autoplay="true" height="360" width="640" src="/wp-content/themes/isctwentyeleven/assets/images/sandbox_launch.mp4" type="video/mp4">'
+        $('#isc-waiting-area').html(waitingcontent)
+
         $.ajax({
             url: sandbox_meta_url, 
             data: {}, 
@@ -80,5 +82,35 @@ function launcheval(sandbox_meta_url, token) {
                 $('#isc-waiting-area').html(emsg)
             }
         })
+    })
+}
+
+function testloading() {
+    setTimeout(testloading, 2000)
+}
+
+
+function testwaitingcontent() {
+    jQuery(document).ready(function($){ 
+        $('#isc-launch-eval-btn').hide()
+        let waitingcontent = "<table id='waitingtable'><tr><td style='width:50%;vertical-align:top'>"
+        waitingcontent += '<video autoplay="true" width="500" src="/wp-content/uploads/2020/03/tryiris-640x360_2.mp4" type="video/mp4">'
+        waitingcontent += "</td><td style='vertical-align:top;font-size:67%'>"
+        waitingcontent += "<p><b>What's going on?</b><br/>"
+        waitingcontent += "We're starting up two docker containers just for you. One is the server – a full version of InterSystems IRIS&reg; data platform. The other is your cloud-based development machine.</p>"
+        waitingcontent += "<p><b>Is the IDE part of InterSystems IRIS?</b><br/>"
+        waitingcontent += "Nope! You'll be using the open source, web-based Theia IDE to work with InterSystems IRIS. As with most back-end technologies, you'll see the IDE more than the server, but rest assured you can use any IDE to work with InterSystems IRIS.</p>"
+        waitingcontent += "<p><b>How long will I have this free sandbox to experiment with?</b><br/>"
+        waitingcontent += "This one will last for 3 days, so feel free to come back to finish something up later. And you can always spin up a new sandbox after this one expires.</p>"         
+        waitingcontent += "<p><b>How long is this going to take?</b><br/>"
+        waitingcontent += "Less than two minutes, and in the meantime, you can read ahead in the exercise to see what's coming. In fact, if youve read this far you should be seeing “Sandbox settings” any second now…</p>"
+        waitingcontent += "</td>"
+
+        waitingcontent = "<table id='waitingtable'><tr><td>"
+        waitingcontent += '<video autoplay="true" width="500" src="/assets/images/sandbox_launch.mp4" type="video/mp4">'
+        waitingcontent += "</td></tr></table>"
+
+        $('#isc-waiting-area').html(waitingcontent)
+        setTimeout(testloading, 2000)
     })
 }
