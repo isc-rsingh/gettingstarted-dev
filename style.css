@@ -6297,18 +6297,3 @@ div.enlighter-default {
 #waitingtable p {
   font-size: 11px;
 }
-
-.ldBar {
-  text-align: center;
-}
-.ldBar-label {
-  font-family: var(--font-family-default);
-}
-.ldBar path.mainline, .ldBar path.baseline {
-  stroke: var(--iscbluelight);
-  stroke-width: 10;
-}
-.ldBar path.mainline {
-  stroke: var(--iscblue);
-  stroke-width: 10;
-}

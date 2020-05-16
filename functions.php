@@ -1368,6 +1368,7 @@ function show_eval_creds($atts = [], $content = null) {
 
 		// Show an explanation of sandbox has expired
 		$expired_messsage = sandbox_exists() ? "<br><em>Your old sandbox has expired. Please provision a new one.</em>" : "";
+		// $expired_messsage = "<br><em>Your old sandbox has expired. Please provision a new one.</em>";
 
 		ob_start();
 		?>
@@ -1377,8 +1378,8 @@ function show_eval_creds($atts = [], $content = null) {
 				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p><?php echo ($values['launch_box_content'])?><?php echo $expired_messsage?></p>
-				<div id="isc-waiting-area"></div>
+				<div id="sandboxloadingbar"></div>
+				<div id="isc-waiting-area"><p><?php echo ($values['launch_box_content'])?></p><?php echo $expired_messsage?></div>
 				<div style="text-align: center">
 					<a style="width:320px" id="isc-launch-eval-btn" class="isc_btn" href="#" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Launch Development Sandbox</a>
 				</div>
@@ -1423,6 +1424,14 @@ function show_eval_creds($atts = [], $content = null) {
 							<tr>
 								<td><strong>password</strong></td>
 								<td><?php echo $all_meta_for_user['sandbox_password']?></td>
+							</tr>
+							<tr>
+								<td><strong>External IDE IP Address</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></td>
+							</tr>
+							<tr>
+								<td><strong>External IDE Port</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
 							</tr>
 							<tr>
 								<td><strong>Server IP Address</strong></td>
@@ -1522,14 +1531,14 @@ function isc_global_vars() {
 
 	global $isc_globals;
 	$isc_globals = array(
-		'sanbox_token_service'  => 'https://lsiris.intersystems.com/test-iris/gs',
+		'sanbox_token_service'  => 'https://lsiris.intersystems.com/try-iris/gs', //'https://lsiris.intersystems.com/test-iris/gs',
 		'sso_registration_page'  => 'https://login.intersystems.com/login/SSO.UI.Register.cls?referrer=',
 		'sso_login_page'      => 'https://login.intersystems.com/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=',
 	);
 	$h = home_url();
 	// things to do if this is a development site
 	if ( strpos($h, 'dev-start') ) {
-		error_log("in dev");
+		$isc_globals['sanbox_token_service']  = 'https://lsiris.intersystems.com/try-iris/gs';
 		$isc_globals['sso_registration_page'] = 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=';
 		$isc_globals['sso_login_page'] = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=';
 	}
