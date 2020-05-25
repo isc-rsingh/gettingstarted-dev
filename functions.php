@@ -1243,7 +1243,7 @@ function install_drift() {
 <!-- End of Async Drift Code --> 
 <?php 
 };
- ******/
+/*****
 /** End Drift Chatbot Implementation **/
 
 
@@ -1533,7 +1533,7 @@ function isc_global_vars() {
 	$isc_globals = array(
 		'sanbox_token_service'  => 'https://lsiris.intersystems.com/try-iris/gs', //'https://lsiris.intersystems.com/test-iris/gs',
 		'sso_registration_page'  => 'https://login.intersystems.com/login/SSO.UI.Register.cls?referrer=',
-		'sso_login_page'      => 'https://login.intersystems.com/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=',
+		'sso_login_page'      => 'https://login.intersystems.com/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=zwdubaHB5lKWgT6JL-UAvH6T0wsDNpTlwRVBieR41C4&redirect_uri=',
 	);
 	$h = home_url();
 	// things to do if this is a development site
