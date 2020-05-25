@@ -23,23 +23,33 @@ Use this shortcode:
 
 This will handle logging in or registering the user with InterSystems SSO, launching the sandbox, and showing configuration settings.
 
+#### Full list of sandbox settings available via user metadata
+
+sandbox_ide_url: Cloud IDE (Theia)
+sandbox_smp: Management Portal
+username: user name
+password: password
+sandbox_ext_ide_ip: External IDE IP Address
+sandbox_ext_ide_port: External IDE Port
+sandbox_isc_ip: Server IP Address
+sandbox_isc_port: Server Port
+sandbox_expires: Expiration time for sandbox
+
 #### Use sandbox settings info throughout the page
 
-Use this shortcode:
+**Use this shortcode:**
 
+```html
+[iris_eval_settings setting="" linktext="" fallback="" prefix="" suffix=""][/iris_eval_settings]
 ```
-[iris_eval_settings][/iris_eval_settings]
-```
 
-attributes:
+**Attributes:**
 
-- setting: one of `sandbox_ide_url`, `sandbox_smp`, `sandbox_isc_ip`, `sandbox_isc_port`, `sandbox_expires`, `sandbox_username`, or `sandbox_password`
-- linktext: if the setting is a link (i.e. `sandbox_ide_url` or `sandbox_smp`), an \<a> tag is created, and the setting value becomes the href and this text will be in the anchor
-- fallback: if the setting isn't found, output this
-
-content:
-
-- anything bracketed by this shortcode will be output at the end of processing
+- **setting:** one of `sandbox_ide_url`, `sandbox_smp`, `sandbox_ext_ide_ip`, `sandbox_ext_ide_port`, `sandbox_isc_ip`, `sandbox_isc_port`, `sandbox_expires`, `sandbox_username`, or `sandbox_password`
+- **linktext:** if the setting is a link (i.e. `sandbox_ide_url` or `sandbox_smp`), an `<a>` tag is created, and the setting value becomes the href and this text will be in the anchor
+- **prefix:** any HTML will be output *before* the setting value
+- **sufffix:** any HTML will be output *after* the setting value
+- **fallback:** if the setting isn't found, output this HTML
 
 ## Notes on ISC modifications
 
@@ -67,10 +77,12 @@ Add this to the "Exclude scripts from Autoptimize" under Settings->Autoptimize->
 
 ### After copy
 
-- Change WordPress address and site address (in General -> Settings)
-- Change SSO URLs
+- Change WordPress address and site address (in General -> Settings or from phpmyadmin in `wp_options` table)
+<!-- - Change SSO URLs (now handled in functions.php by changing URL based on site) -->
+- Update openid settings
 - Allow search engine indexing
 - Remove debug flag from wp-config.php
+- Check time zone
 
 ## Description
 
