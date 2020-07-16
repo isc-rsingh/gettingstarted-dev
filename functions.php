@@ -923,9 +923,9 @@ add_action( 'init', 'register_raj_nav_menu');
 
 // setup note
 function isc_note_irissetup_shortcode() {
-	$output = '<div class="isc_infobox">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-info.png""></div>';
-	$output .= '  <div class="isc_infobox--content">If you don’t have InterSystems IRIS set up yet,  <a href="https://www.intersystems.com/try" target="sandboxwindow">get a free development sandbox here</a>.</div>';
+	$output = '<div class="isc_infobox isc_infobox--note">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_note.svg"></div>';
+	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Note:</div><div>If you don’t have InterSystems IRIS set up yet,  <a href="https://www.intersystems.com/try" target="sandboxwindow">get a free development sandbox here</a>.</div></div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -933,9 +933,9 @@ add_shortcode('isc_note_irissetup', 'isc_note_irissetup_shortcode');
 
 // generic note
 function isc_note_shortcode($atts, $content=null) {
-	$output = '<div class="isc_infobox">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-info.png"></div>';
-	$output .= '  <div class="isc_infobox--content">' . $content . '</div>';
+	$output = '<div class="isc_infobox isc_infobox--note">';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_note.svg"></div>';
+	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Note:</div><div>' . $content . '</div></div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -944,8 +944,8 @@ add_shortcode('isc_note', 'isc_note_shortcode');
 // useful hint
 function isc_tip_shortcode($atts, $content=null) {
 	$output = '<div class="isc_infobox isc_infobox--tip">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-tip.png""></i></div>';
-	$output .= '  <div class="isc_infobox--content">' . $content . '</div>';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_tip.svg"></i></div>';
+	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Tip</div><div>' . $content . '</div></div>';
 	$output .= '</div>';
 	return $output;
 }
@@ -954,8 +954,8 @@ add_shortcode('isc_tip', 'isc_tip_shortcode');
 // warning note
 function isc_warning_shortcode($atts, $content=null) {
 	$output = '<div class="isc_infobox isc_infobox--warning">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/icon-warning.png""></i></div>';
-	$output .= '  <div class="isc_infobox--content">' . $content . '</div>';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_warning.svg"></i></div>';
+	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Warning<div>' . $content . '</div></div>';
 	$output .= '</div>';
 	return $output;
 }
