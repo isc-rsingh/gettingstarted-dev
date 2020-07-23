@@ -1309,9 +1309,9 @@ function three_days_from_now() {
 // Show evaluation instance credentials
 function show_eval_creds($atts = [], $content = null) {
 	$values = shortcode_atts( array(
-		'login_box_content' => "If you don’t have InterSystems IRIS yet, get a free, online development sandbox here. Log in with your InterSystems universal account, or register for one below.",
-		'launch_box_content' => "Provision your free, online sandbox environment. Includes InterSystems IRIS and a browser-based IDE.", 
-		'login_after_reg_box_content' => "Thanks for registering! Now login to launch your InterSystems IRIS sandbox"
+		'login_box_content' => '<div class="isc_infobox--title">Need InterSystems IRIS?</div><div>Get a free, online development sandbox here. Log in with your InterSystems universal account, or register for one below.</div>',
+		'launch_box_content' => '<div class="isc_infobox--title">Provision your free, online sandbox environment</div><div>Includes InterSystems IRIS and a browser-based IDE.</div>', 
+		'login_after_reg_box_content' => '<div class="isc_infobox--title">Thanks for registering!</div><div>Now login to launch your InterSystems IRIS sandbox</div>'
 	), $atts);
 
 	$user_id = get_current_user_id();
@@ -1333,11 +1333,9 @@ function show_eval_creds($atts = [], $content = null) {
 				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p>
-					<?php if ( !isset($_GET["ssoToken"]) ) echo ($values['login_box_content'])?>
-					<?php if ( isset($_GET["ssoToken"]) ) echo ($values['login_after_reg_box_content'])?>
-				</p>
-				<div  style="text-align: center">
+				<?php if ( !isset($_GET["ssoToken"]) ) echo ($values['login_box_content'])?>
+				<?php if ( isset($_GET["ssoToken"]) ) echo ($values['login_after_reg_box_content'])?>
+				<div  style="text-align: center;padding-top: 24px">
 					<?php echo (do_shortcode($content)) ?>
 					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn" href="' . $ssoregister . '">Register</a>')?>
 				</div>
@@ -1379,9 +1377,12 @@ function show_eval_creds($atts = [], $content = null) {
 			</div>
 			<div class="isc_infobox--content">
 				<div id="sandboxloadingbar"></div>
-				<div id="isc-waiting-area"><p><?php echo ($values['launch_box_content'])?></p><?php echo $expired_messsage?></div>
-				<div style="text-align: center">
-					<a style="width:320px" id="isc-launch-eval-btn" class="isc_btn" href="#" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Launch Development Sandbox</a>
+				<div id="isc-waiting-area">
+					<?php echo ($values['launch_box_content'])?>
+					<!-- <?php echo $expired_messsage?> -->
+				</div>
+				<div style="text-align:center;margin-top:24px;">
+					<a style="width:320px;" id="isc-launch-eval-btn" class="isc_btn" href="#" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Re-provision Expired Sandbox</a>
 				</div>
 			</div>
 		</div>
