@@ -1466,6 +1466,9 @@ function show_iris_eval_setting($atts = [], $content = "") {
 		'suffix' => "", 
 		'fallback' => ""
 	), $atts);
+	if ( sandbox_expired() ) 
+		return '<em><b><a href="#getsandbox">Please launch the sandbox before continuing!</a></b></em>';
+
 	if ( $values['setting'] == null ) 
 		return 'MISSING SETTING VALUE';
 
