@@ -1337,7 +1337,7 @@ function show_eval_creds($atts = [], $content = null) {
 				<?php if ( isset($_GET["ssoToken"]) ) echo ($values['login_after_reg_box_content'])?>
 				<div  style="text-align: center;padding-top: 24px">
 					<?php echo (do_shortcode($content)) ?>
-					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn" href="' . $ssoregister . '">Register</a>')?>
+					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn isc_register" href="' . $ssoregister . '">Register</a>')?>
 				</div>
 			</div>
 		</div>
