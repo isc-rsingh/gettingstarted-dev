@@ -5542,7 +5542,8 @@ ol.twenty {
               -webkit-transition: all 200ms ease-in-out;
               transition: all 200ms ease-in-out; }
               .flex-content__sidebar__links li a:hover {
-                color: var(--iscblue); }
+                color: var(--iscblue);
+                font-weight: 900; }
               .flex-content__sidebar__links li a:focus {
                 opacity: 0.65; }
             .flex-content__sidebar__links li.active a {
