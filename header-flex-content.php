@@ -123,7 +123,7 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 		</hgroup>
 
 		<a href="/" class="navbar__logo" rel="home">
-			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.svg" />
+			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.svg" alt="InterSystems: Creative data technology" />
 		</a>
 		
 		<div class="navbar__nav">
