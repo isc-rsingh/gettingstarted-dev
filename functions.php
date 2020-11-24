@@ -1337,7 +1337,7 @@ function show_eval_creds($atts = [], $content = null) {
 				<?php if ( isset($_GET["ssoToken"]) ) echo ($values['login_after_reg_box_content'])?>
 				<div  style="text-align: center;padding-top: 24px">
 					<?php echo (do_shortcode($content)) ?>
-					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn" href="' . $ssoregister . '">Register</a>')?>
+					<?php if ( !isset($_GET["ssoToken"]) ) echo ('<a class="isc_btn isc_register" href="' . $ssoregister . '">Register</a>')?>
 				</div>
 			</div>
 		</div>
@@ -1508,14 +1508,16 @@ function sandbox_config_callback() {
 	update_user_meta( $user_id, 'sandbox_password', $sandbox_password);
 	$sandbox_smp = sanitize_text_field( $_POST['MP']);
 	update_user_meta( $user_id, 'sandbox_smp', $sandbox_smp);
-	$sandbox_ext_ide_ip = sanitize_text_field( $_POST['AtelierAddress']);
+	$sandbox_ext_ide_ip = sanitize_text_field( $_POST['HostServerAddress']);
 	update_user_meta( $user_id, 'sandbox_ext_ide_ip', $sandbox_ext_ide_ip);
-	$sandbox_ext_ide_port = sanitize_text_field( $_POST['AtelierWebPort']);
+	$sandbox_ext_ide_port = sanitize_text_field( $_POST['HostWebPort']);
 	update_user_meta( $user_id, 'sandbox_ext_ide_port', $sandbox_ext_ide_port);
 	$sandbox_isc_ip = sanitize_text_field( $_POST['InterSystemsIP']);
 	update_user_meta( $user_id, 'sandbox_isc_ip', $sandbox_isc_ip);
-	$sandbox_isc_port = sanitize_text_field( $_POST['InterSystemsPort']);
+	$sandbox_isc_port = sanitize_text_field( $_POST['InterSystems 51773 Port']);
 	update_user_meta( $user_id, 'sandbox_isc_port', $sandbox_isc_port);
+	$sandbox_1972_port = sanitize_text_field( $_POST['InterSystems 1972 Port']);
+	update_user_meta( $user_id, 'sandbox_1972_port', $sandbox_1972_port);
 	$sandbox_expires = sanitize_text_field( $_POST['exp']);
 	update_user_meta( $user_id, 'sandbox_expires', $sandbox_expires);
 	update_user_meta( $user_id, 'sandbox_expires', date('c', three_days_from_now()) );
