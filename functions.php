@@ -924,7 +924,7 @@ add_action( 'init', 'register_raj_nav_menu');
 // setup note
 function isc_note_irissetup_shortcode() {
 	$output = '<div class="isc_infobox isc_infobox--note">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_note.svg"></div>';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_note.svg" alt="note"></div>';
 	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Note:</div><div>If you don’t have InterSystems IRIS set up yet,  <a href="https://www.intersystems.com/try" target="sandboxwindow">get a free development sandbox here</a>.</div></div>';
 	$output .= '</div>';
 	return $output;
@@ -934,7 +934,7 @@ add_shortcode('isc_note_irissetup', 'isc_note_irissetup_shortcode');
 // generic note
 function isc_note_shortcode($atts, $content=null) {
 	$output = '<div class="isc_infobox isc_infobox--note">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_note.svg"></div>';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_note.svg" alt="note"></div>';
 	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Note:</div><div>' . $content . '</div></div>';
 	$output .= '</div>';
 	return $output;
@@ -944,7 +944,7 @@ add_shortcode('isc_note', 'isc_note_shortcode');
 // useful hint
 function isc_tip_shortcode($atts, $content=null) {
 	$output = '<div class="isc_infobox isc_infobox--tip">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_tip.svg"></i></div>';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_tip.svg" alt="tip"></i></div>';
 	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Tip</div><div>' . $content . '</div></div>';
 	$output .= '</div>';
 	return $output;
@@ -954,7 +954,7 @@ add_shortcode('isc_tip', 'isc_tip_shortcode');
 // warning note
 function isc_warning_shortcode($atts, $content=null) {
 	$output = '<div class="isc_infobox isc_infobox--warning">';
-	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_warning.svg"></i></div>';
+	$output .= '  <div class="isc_infobox--icon"><img src="' . get_template_directory_uri() . '/assets/images/box_icon_warning.svg" alt="warning"></i></div>';
 	$output .= '  <div class="isc_infobox--content"><div class="isc_infobox--title">Warning<div>' . $content . '</div></div>';
 	$output .= '</div>';
 	return $output;
@@ -968,7 +968,7 @@ function isc_note_timetocomplete_shortcode($atts, $content=null) {
 	), $atts);
 
 	$output = '<div class="isc_infobox">';
-	$output .= '  <div class="isc_infobox--icon"><i class="fas fa-user-clock" style="font-size:smaller"></i></div>';
+	$output .= '  <div class="isc_infobox--icon"><i class="fas fa-user-clock" style="font-size:smaller" alt="time to complete"></i></div>';
 	$output .= '  <div class="isc_infobox--title isc_infobox--warning--title">' . $vals['minutes'] . ' minutes</div>';
 	$output .= '  <div class="isc_infobox--content">estimated time of completion</a>.</div>';
 	$output .= '</div>';
@@ -1330,7 +1330,7 @@ function show_eval_creds($atts = [], $content = null) {
 		<a name="getsandbox"></a>
 		<div class="isc_infobox isc_infobox--tip">
 			<div class="isc_infobox--icon">
-				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded" alt="tip"></i>
 			</div>
 			<div class="isc_infobox--content">
 				<?php if ( !isset($_GET["ssoToken"]) ) echo ($values['login_box_content'])?>
@@ -1373,7 +1373,7 @@ function show_eval_creds($atts = [], $content = null) {
 		<a name="getsandbox"></a>
 		<div class="isc_infobox isc_infobox--tip">
 			<div class="isc_infobox--icon">
-				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded" alt="tip"></i>
 			</div>
 			<div class="isc_infobox--content">
 				<div id="sandboxloadingbar"></div>
@@ -1396,7 +1396,7 @@ function show_eval_creds($atts = [], $content = null) {
 		<a name="getsandbox"></a>
 		<div class="isc_infobox isc_infobox--tip">
 			<div class="isc_infobox--icon">
-				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded"></i>
+				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded" alt="tip"></i>
 			</div>
 			<div class="isc_infobox--content">
 				<p class="h_4" style="margin:0">Sandbox Settings</p>
