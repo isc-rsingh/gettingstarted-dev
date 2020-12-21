@@ -1514,10 +1514,8 @@ function sandbox_config_callback() {
 	update_user_meta( $user_id, 'sandbox_ext_ide_port', $sandbox_ext_ide_port);
 	$sandbox_isc_ip = sanitize_text_field( $_POST['InterSystemsIP']);
 	update_user_meta( $user_id, 'sandbox_isc_ip', $sandbox_isc_ip);
-	$sandbox_isc_port = sanitize_text_field( $_POST['InterSystems 51773 Port']);
+	$sandbox_isc_port = sanitize_text_field( $_POST['InterSystems51773Port']);
 	update_user_meta( $user_id, 'sandbox_isc_port', $sandbox_isc_port);
-	$sandbox_1972_port = sanitize_text_field( $_POST['InterSystems 1972 Port']);
-	update_user_meta( $user_id, 'sandbox_1972_port', $sandbox_1972_port);
 	$sandbox_expires = sanitize_text_field( $_POST['exp']);
 	update_user_meta( $user_id, 'sandbox_expires', $sandbox_expires);
 	update_user_meta( $user_id, 'sandbox_expires', date('c', three_days_from_now()) );
@@ -1544,7 +1542,7 @@ function isc_global_vars() {
 	$h = home_url();
 	// things to do if this is a development site
 	if ( strpos($h, 'dev-start') ) {
-		$isc_globals['sanbox_token_service']  = 'https://lsiris.intersystems.com/try-iris/gs';
+		$isc_globals['sanbox_token_service']  = 'https://lsiris.intersystems.com/test-iris/gs';
 		$isc_globals['sso_registration_page'] = 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=';
 		$isc_globals['sso_login_page'] = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=';
 	}
