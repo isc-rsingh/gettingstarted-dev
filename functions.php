@@ -1408,8 +1408,7 @@ function show_eval_creds($atts = [], $content = null) {
 							</tr>
 							<tr>
 								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank">Management Portal</a></strong></td>
-								<td>username: <strong><?php echo $all_meta_for_user['sandbox_username']?></strong><br/>
-								password: <strong><?php echo $all_meta_for_user['sandbox_password']?></strong></td>
+								<td>username: <strong><?php echo $all_meta_for_user['sandbox_username']?></strong>, password: <strong><?php echo $all_meta_for_user['sandbox_password']?></strong></td>
 							</tr>
 							<tr>
 								<td><strong>External IDE IP</strong></td>
