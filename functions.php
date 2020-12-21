@@ -1400,47 +1400,24 @@ function show_eval_creds($atts = [], $content = null) {
 			</div>
 			<div class="isc_infobox--content">
 				<p class="h_4" style="margin:0">Sandbox Settings</p>
-				<!-- <ul class="isc_infobox--sandbox--settings">
-					<li>username / password: <code><?php echo $all_meta_for_user['sandbox_username']?></code> / <code><?php echo $all_meta_for_user['sandbox_password']?></code></li>
-					<li>IDE: <a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank"><?php echo $all_meta_for_user['sandbox_ide_url']?></a></li>
-					<li>Management Portal: <a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank"><?php echo $all_meta_for_user['sandbox_smp']?></a></li>
-					<li>Server IP Address: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></strong></li>
-					<li>Server Port: <strong><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></strong></li>
-					<li>Expires: <strong><?php echo $all_meta_for_user['sandbox_expires']?></strong></li>
-				</ul> -->
 				<table>
 						<tbody>
 							<tr>
-								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Cloud IDE</a></td>
-								<td><?php echo $all_meta_for_user['sandbox_ide_url']?></strong></td>
+								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Cloud IDE</a></strong</td>
+								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank">Management Portal</a></strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_smp']?></td>
+								<td>username: <strong><?php echo $all_meta_for_user['sandbox_username']?></strong><br/>
+								password: <strong><?php echo $all_meta_for_user['sandbox_password']?></strong></td>
 							</tr>
 							<tr>
-								<td><strong>username</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_username']?></td>
+								<td><strong>External IDE IP</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?>:<?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
 							</tr>
 							<tr>
-								<td><strong>password</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_password']?></td>
-							</tr>
-							<tr>
-								<td><strong>External IDE IP Address</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?></td>
-							</tr>
-							<tr>
-								<td><strong>External IDE Port</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
-							</tr>
-							<tr>
-								<td><strong>Server IP Address</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_isc_ip']?></td>
-							</tr>
-							<tr>
-								<td><strong>Server Port</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_isc_port']?></td>
+								<td><strong>Server IP</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_isc_ip']?>:<?php echo $all_meta_for_user['sandbox_isc_port']?></td>
 							</tr>
 							<tr>
 								<td><strong>Expiration</strong></td>
