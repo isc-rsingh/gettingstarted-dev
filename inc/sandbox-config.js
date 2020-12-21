@@ -38,7 +38,7 @@ function sandbox_build_progress(pollurl, token) {
                     setTimeout(sandbox_build_progress, 2000, pollurl, token)
                 } else if ( resp == "SUCCESS" ) {
                     console.log("Polling done, saving config info")
-                    console.log(response.data)
+                    console.log(JSON.stringify(response.data, undefined, 4))
                     sandbox_config_save(response.data)
                 } else {
                     console.log("ERROR IN POLLING...")
