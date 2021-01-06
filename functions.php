@@ -1400,7 +1400,10 @@ function show_eval_creds($atts = [], $content = null) {
 			</div>
 			<div class="isc_infobox--content">
 				<p class="h_4" style="margin:0">Sandbox Settings</p>
-				<table>
+				<style>
+					table .minor_setting {  font-style: italic; }
+				</style>
+				<table id="sandbox_user_settings">
 						<tbody>
 							<tr>
 								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Cloud IDE</a></strong</td>
@@ -1408,15 +1411,23 @@ function show_eval_creds($atts = [], $content = null) {
 							</tr>
 							<tr>
 								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_smp']?>" target="_blank">Management Portal</a></strong></td>
-								<td>username: <strong><?php echo $all_meta_for_user['sandbox_username']?></strong>, password: <strong><?php echo $all_meta_for_user['sandbox_password']?></strong></td>
+								<td>(username: <strong><?php echo $all_meta_for_user['sandbox_username']?></strong>, password: <strong><?php echo $all_meta_for_user['sandbox_password']?></strong>)</td>
 							</tr>
 							<tr>
 								<td><strong>External IDE IP</strong></td>
 								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?>:<?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
 							</tr>
 							<tr>
-								<td><strong>Server IP</strong></td>
-								<td><?php echo $all_meta_for_user['sandbox_isc_ip']?>:<?php echo $all_meta_for_user['sandbox_isc_port']?></td>
+								<td><strong>InterSystems IRIS Host</strong></td>
+								<td><?php echo $all_meta_for_user['sandbox_isc_ip']?></td>
+							</tr>
+							<tr>
+								<td class="minor_setting">IDE port</td>
+								<td><?php echo $all_meta_for_user['sandbox_isc_port']?></td>
+							</tr>
+							<tr>
+								<td class="minor_setting">Application port</td>
+								<td><?php echo $all_meta_for_user['sandbox_gateway_port']?></td>
 							</tr>
 							<tr>
 								<td><strong>Expiration</strong></td>
@@ -1492,6 +1503,8 @@ function sandbox_config_callback() {
 	update_user_meta( $user_id, 'sandbox_isc_ip', $sandbox_isc_ip);
 	$sandbox_isc_port = sanitize_text_field( $_POST['InterSystems51773Port']);
 	update_user_meta( $user_id, 'sandbox_isc_port', $sandbox_isc_port);
+	$sandbox_gateway_port = sanitize_text_field( $_POST['InterSystems1972Port']);
+	update_user_meta( $user_id, 'sandbox_gateway_port', $sandbox_gateway_port);
 	$sandbox_expires = sanitize_text_field( $_POST['exp']);
 	update_user_meta( $user_id, 'sandbox_expires', $sandbox_expires);
 	update_user_meta( $user_id, 'sandbox_expires', date('c', three_days_from_now()) );
