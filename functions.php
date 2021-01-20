@@ -1472,7 +1472,9 @@ function show_iris_eval_setting($atts = [], $content = "") {
 		if ( $values['linktext'] ) {
 			return '<a href="' . $val . '" target="_blank">' . $values['linktext'] . '</a>' . $content;
 		} else {
-			return "{$values['prefix']}" . "{$val}" . "{$values['suffix']}" . $content;
+			$pre = html_entity_decode($values['prefix']);
+			$suf = html_entity_decode($values['suffix']);
+			return "{$pre}" . "{$val}" . "{$suf}" . $content;
 		}
 	}
 }
