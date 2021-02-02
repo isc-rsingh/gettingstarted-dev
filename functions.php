@@ -1399,14 +1399,14 @@ function show_eval_creds($atts = [], $content = null) {
 				<img src="<?php echo get_template_directory_uri()?>/assets/images/icon-tip.png" class="ls-is-cached lazyloaded" alt="tip"></i>
 			</div>
 			<div class="isc_infobox--content">
-				<p class="h_4" style="margin:0">Sandbox Settings</p>
+				<p class="h_4" style="margin:0">InterSystems Sandbox Settings</p>
 				<style>
 					table .minor_setting {  font-style: italic; }
 				</style>
 				<table id="sandbox_user_settings">
 						<tbody>
 							<tr>
-								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Cloud IDE</a></strong</td>
+								<td><strong><a href="<?php echo $all_meta_for_user['sandbox_ide_url']?>" target="_blank">Sandbox IDE</a></strong</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
