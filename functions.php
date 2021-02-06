@@ -1358,15 +1358,14 @@ function show_eval_creds($atts = [], $content = null) {
 		$user_info = get_userdata($user_id);
 		$useremail = $user_info->user_email;
 		global $isc_globals;
-		$token_url = $isc_globals['sanbox_token_service'] . '/authorize/' . $useremail;
+		$token_url = $isc_globals['sandbox_token_service'] . '/authorize/' . $useremail;
 		$sandbox_token = file_get_contents($token_url);
 		error_log("token_url: $token_url");
-		$sandbox_meta_url = $isc_globals['sanbox_token_service'] . '/new-container/' . $useremail;
+		$sandbox_meta_url = $isc_globals['sandbox_token_service'] . '/new-container/' . $useremail;
 		error_log("sandbox_meta_url: $sandbox_meta_url");
 
 		// Show an explanation of sandbox has expired
-		$expired_messsage = sandbox_exists() ? "<br><em>Your old sandbox has expired. Please provision a new one.</em>" : "";
-		// $expired_messsage = "<br><em>Your old sandbox has expired. Please provision a new one.</em>";
+		$expired_messsage = sandbox_exists() ? "<br><em>Please provision your sandbox.</em>" : "";
 
 		ob_start();
 		?>
@@ -1382,7 +1381,7 @@ function show_eval_creds($atts = [], $content = null) {
 					<!-- <?php echo $expired_messsage?> -->
 				</div>
 				<div style="text-align:center;margin-top:24px;">
-					<a style="width:320px;" id="isc-launch-eval-btn" class="isc_btn" href="#" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Re-provision Expired Sandbox</a>
+					<a style="width:320px;" id="isc-launch-eval-btn" class="isc_btn" href="#" onclick="launcheval('<?php echo($sandbox_meta_url)?>', '<?php echo($sandbox_token)?>')">Provision Sandbox</a>
 				</div>
 			</div>
 		</div>
@@ -1416,6 +1415,10 @@ function show_eval_creds($atts = [], $content = null) {
 							<tr>
 								<td><strong>External IDE IP</strong></td>
 								<td><?php echo $all_meta_for_user['sandbox_ext_ide_ip']?>:<?php echo $all_meta_for_user['sandbox_ext_ide_port']?></td>
+							</tr>
+							<tr>
+								<td class="minor_setting">Web dev port</td>
+								<td><?php echo $all_meta_for_user['sandbox_webdev_port']?></td>
 							</tr>
 							<tr>
 								<td><strong>InterSystems IRIS Host</strong></td>
@@ -1507,6 +1510,8 @@ function sandbox_config_callback() {
 	update_user_meta( $user_id, 'sandbox_isc_port', $sandbox_isc_port);
 	$sandbox_gateway_port = sanitize_text_field( $_POST['InterSystems1972Port']);
 	update_user_meta( $user_id, 'sandbox_gateway_port', $sandbox_gateway_port);
+	$sandbox_webdev_port = sanitize_text_field( $_POST['TheiaIDE4200Port']);
+	update_user_meta( $user_id, 'sandbox_webdev_port', $sandbox_webdev_port);
 	$sandbox_expires = sanitize_text_field( $_POST['exp']);
 	update_user_meta( $user_id, 'sandbox_expires', $sandbox_expires);
 	update_user_meta( $user_id, 'sandbox_expires', date('c', three_days_from_now()) );
@@ -1526,7 +1531,7 @@ function isc_global_vars() {
 
 	global $isc_globals;
 	$isc_globals = array(
-		'sanbox_token_service'  => 'https://lsiris.intersystems.com/try-iris/gs',
+		'sandbox_token_service'  => 'https://lsiris.intersystems.com/try-iris/gs',
 		'sso_registration_page'  => 'https://login.intersystems.com/login/SSO.UI.Register.cls?referrer=',
 		'sso_login_page'      => 'https://login.intersystems.com/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=zwdubaHB5lKWgT6JL-UAvH6T0wsDNpTlwRVBieR41C4&redirect_uri=',
 	);
@@ -1535,7 +1540,7 @@ function isc_global_vars() {
 	// - sandbox endpoint is test-iris instead of try-iris
 	// - SSO registration changes to URLs with uat in the endpoint
 	if ( strpos($h, 'dev-start') ) {
-		$isc_globals['sanbox_token_service']  = 'https://lsiris.intersystems.com/test-iris/gs';
+		$isc_globals['sandbox_token_service']  = 'https://lsiris.intersystems.com/test-iris/gs';
 		$isc_globals['sso_registration_page'] = 'https://login.intersystems.com/loginuat/SSO.UI.Register.cls?referrer=';
 		$isc_globals['sso_login_page'] = 'https://login.intersystems.com/uat/oauth2/authorize?response_type=code&scope=email+profile+openid&client_id=6XlAB83aJbEcrCJ4oisbRUc0elnmYtRrjXQBFX4NRlw&redirect_uri=';
 	}
