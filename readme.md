@@ -45,7 +45,7 @@ sandbox_expires: Expiration time for sandbox
 
 **Attributes:**
 
-- **setting:** one of `sandbox_ide_url`, `sandbox_smp`, `sandbox_ext_ide_ip`, `sandbox_ext_ide_port`, `sandbox_isc_ip`, `sandbox_isc_port`, `sandbox_expires`, `sandbox_username`, or `sandbox_password`
+- **setting:** one of (#)[sandbox settings] above
 - **linktext:** if the setting is a link (i.e. `sandbox_ide_url` or `sandbox_smp`), an `<a>` tag is created, and the setting value becomes the href and this text will be in the anchor
 - **prefix:** any HTML will be output *before* the setting value
 - **sufffix:** any HTML will be output *after* the setting value
@@ -73,6 +73,7 @@ Add this to the "Exclude scripts from Autoptimize" under Settings->Autoptimize->
 
 ### Before copying
 
+- Uncomment Analytics (Heap and GA/GTM)
 - Uncomment Drift
 - Disable Daggerhart OpenID plugin
 
@@ -96,3 +97,29 @@ The 2011 theme for WordPress is sophisticated, lightweight, and adaptable. Make 
 
 For more information about Twenty Eleven please go to https://codex.wordpress.org/Twenty_Eleven.
 
+
+## Developers guide
+
+### LSIRIS sandbox launcher
+
+1. request token
+2. request sandbox
+3. successful response (takes half a minute)
+
+    ```json
+    {
+        "IDE": "https://3000-0-c9dd0b12.staging-labs.learning.intersystems.com",
+        "username": "tech",
+        "password": "demo",
+        "MP": "https://52773-1-c9dd0b12.staging-labs.learning.intersystems.com/csp/sys/UtilHome.csp?IRISUsername=tech&IRISPassword=demo",
+        "IDEConnections": "(including VSCode and Atelier)",
+        "HostServerAddress": "52773-1-c9dd0b12.staging-labs.learning.intersystems.com",
+        "HostWebPort": "80",
+        "ExtConnections": "(including InterSystems Studio)",
+        "InterSystemsIP": "23.236.52.154",
+        "InterSystems1972Port": "25619",
+        "InterSystems51773Port": "14409",
+        "TheiaIDE4200Port": "24473",
+        "exp": "2021-02-07T23:26:54.572079-05:00"
+    }
+    ```
