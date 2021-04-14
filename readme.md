@@ -73,7 +73,7 @@ Add this to the "Exclude scripts from Autoptimize" under Settings->Autoptimize->
 
 ### Before copying
 
-- Uncomment Analytics (Heap and GA/GTM)
+- Uncomment Analytics (Heap and GA/GTM) from header.php and header-flex-content.php
 - Uncomment Drift
 - Disable Daggerhart OpenID plugin
 
