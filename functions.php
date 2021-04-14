@@ -46,7 +46,7 @@ if ( ! isset( $content_width ) ) {
 }
 
 define( 'THEME_NAME', 'ISC Theme' );
-define( 'THEME_VERSION', '1.1.1' );
+define( 'THEME_VERSION', '1.1.4' );
 
 /*
  * Tell WordPress to run twentyeleven_setup() when the 'after_setup_theme' hook is run.
@@ -1012,6 +1012,17 @@ function disable_wp_auto_p( $content ) {
   }
   add_filter( 'the_content', 'disable_wp_auto_p', 0 );
 
+ /**
+ * Enqueue Styles - Load Front End CSS
+ */
+function isc_enqueue_front_end_styles() {
+
+	$version = THEME_VERSION;
+   	wp_enqueue_style( $handle . '-new-module-styles', get_template_directory_uri() . '/new-module-styles.css', array(), $version );
+
+}
+add_action( 'wp_enqueue_scripts', 'isc_enqueue_front_end_styles' );
+
 /**
  * Enqueue Scripts - Load Front End JS
  */
@@ -1457,7 +1468,7 @@ function show_iris_eval_setting($atts = [], $content = "") {
 		'fallback' => ""
 	), $atts);
 	if ( sandbox_expired() ) 
-		return '<em><b><a href="#getsandbox">Please launch the sandbox before continuing!</a></b></em>';
+	return '<em><a href="#getsandbox">-- cannot display value - please provision a sandbox</a></em>';
 
 	if ( $values['setting'] == null ) 
 		return 'MISSING SETTING VALUE';
