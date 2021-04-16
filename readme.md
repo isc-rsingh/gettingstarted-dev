@@ -58,6 +58,13 @@ sandbox_expires: Expiration time for sandbox
 Use OAuth plugin: https://github.com/daggerhart/openid-connect-generic
 
 In `openid-connect-generic-login-form.php` modify the function `function make_login_button()` to have class attributes that work for our theme.
+e.g. 
+
+```javascript
+<span class="openid-connect-login-button">
+  <a class="isc_btn isc_login" href="<?php print esc_url( $href ); ?>"><?php print $text; ?></a>
+</span>
+```
 
 ### For sandbox startup
 
@@ -76,6 +83,13 @@ Add this to the "Exclude scripts from Autoptimize" under Settings->Autoptimize->
 - Uncomment Analytics (Heap and GA/GTM) from header.php and header-flex-content.php
 - Uncomment Drift
 - Disable Daggerhart OpenID plugin
+- set WP_DEBUG to false in `wp-config.php`
+
+## Copying
+
+- Back up production site (or just make sure the nightly backup is sufficient)
+- Use WP Engine to copy the entire site (including database) from dev to production
+- Copy new media files from dev to production
 
 ### After copy
 
