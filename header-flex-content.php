@@ -28,6 +28,13 @@
 
 <!-- ?php if ( function_exists('cn_cookies_accepted') && cn_cookies_accepted() ) : ?> -->
 <?php if ( function_exists('activate_em_cookie_notification') ) : ?>
+	<!-- Uncomment for production -->
+	<!-- Heap -->
+	<!-- <script type="text/javascript">   
+		window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};   
+		heap.load("2183293721"); 
+	</script> -->
+	<!-- End Heap -->
 	<!-- Google Tag Manager -->
 	<!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -35,12 +42,6 @@
 	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 	})(window,document,'script','dataLayer','GTM-PKG7GB');</script> -->
 	<!-- End Google Tag Manager -->
-	<!-- Heap -->
-	<!-- <script type="text/javascript">   
-		window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};   
-		heap.load("2183293721"); 
-	</script> -->
-	<!-- End Heap -->
 <?php endif; ?>
 
 <title>
@@ -49,6 +50,10 @@
 	global $page, $paged;
 
 	wp_title( '|', true, 'right' );
+
+	$ab_testing = get_field('ab_testing_styles');
+	$ab_testing_styles = $ab_testing ? 'ab-styles' : '';
+	$disable_nav_cta = get_field('disable_nav_cta');
 
 	// Add the blog name.
 	// bloginfo	( 'name' );
@@ -107,7 +112,7 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 <?php endif; ?>
 
 <?php wp_body_open(); ?>
-<div id="page" class="hfeed">
+<div id="page" class="hfeed <?php echo $ab_testing_styles; ?>">
 	<div id="sitesmenu">				
 		<?php
 			wp_nav_menu(
@@ -131,6 +136,17 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 		<a href="/" class="navbar__logo" rel="home">
 			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.svg" alt="InterSystems: Creative data technology" />
 		</a>
+
+		<?php if(!$disable_nav_cta) : 
+			$nav_cta = get_field('nav_cta', 'options');
+			$nav_cta_classes = get_field('nav_cta_classes', 'options') ? get_field('nav_cta_classes', 'options') : '';
+			?> 
+			<?php if($nav_cta) : ?>
+				<div class="navbar__cta">
+					<a href="<?php echo $nav_cta['url']; ?>" class="isc_btn <?php echo $nav_cta_classes; ?>" target="<?php echo $nav_cta['target']; ?>"><?php echo $nav_cta['title']; ?></a>
+				</div>
+			<?php endif; ?>
+		<?php endif; ?>
 		
 		<div class="navbar__nav">
 			<?php
@@ -138,6 +154,9 @@ if ( is_singular() && get_option( 'thread_comments' ) ) {
 				$bottom_cta = get_field('bottom_cta', 'options') ? get_field('bottom_cta', 'options') : '';
 				$bottom_cta_link = get_field('bottom_cta_link', 'options') ? '<a href="' . get_field('bottom_cta_link', 'options')['url'] . '" target="' . get_field('bottom_cta_link', 'options')['target'] . '" class="isc_btn">' . get_field('bottom_cta_link', 'options')['title'] . '</a>' : '';
 
+				 
+				echo '<div class="navbar__nav__title">Getting Started</div>';
+				
 				wp_nav_menu(
 					array(
 						'theme_location' => 'primary',
